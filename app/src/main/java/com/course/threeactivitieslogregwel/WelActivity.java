@@ -16,6 +16,8 @@ public class WelActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wel);
 
+        Toast.makeText(this, "WelActivity OnCreate", Toast.LENGTH_SHORT).show();
+
 
         EditText textWelcome = (EditText)findViewById(R.id.textWelcome);
 
@@ -33,7 +35,7 @@ public class WelActivity extends AppCompatActivity {
             }
         });
 
-        Toast.makeText(this, "WelActivity OnCreate", Toast.LENGTH_SHORT).show();
+
 
     }
 
