@@ -20,9 +20,6 @@ public class WelActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wel);
 
-        Toast.makeText(this, "WelActivity OnCreate", Toast.LENGTH_SHORT).show();
-
-
         Intent intent = getIntent();
 
         initToolbar();
@@ -37,39 +34,4 @@ public class WelActivity extends FragmentActivity {
 
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Toast.makeText(this, "WelActivity OnRestart", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Toast.makeText(this, "WelActivity OnStart", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Toast.makeText(this, "WelActivity OnResume", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Toast.makeText(this, "WelActivity OnPause", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Toast.makeText(this, "WelActivity OnStop", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Toast.makeText(this, "WelActivity OnDestroy", Toast.LENGTH_SHORT).show();
-    }
 }
