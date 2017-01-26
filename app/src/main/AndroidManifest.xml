@@ -3,6 +3,7 @@
     package="com.course.threeactivitieslogregwel">
 
     <application
+        android:name="MyApplicationClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="Login"
