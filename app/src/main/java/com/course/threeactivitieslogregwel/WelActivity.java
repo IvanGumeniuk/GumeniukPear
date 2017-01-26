@@ -5,12 +5,15 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 public class WelActivity extends FragmentActivity {
+
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,23 +23,17 @@ public class WelActivity extends FragmentActivity {
         Toast.makeText(this, "WelActivity OnCreate", Toast.LENGTH_SHORT).show();
 
 
-        EditText textWelcome = (EditText)findViewById(R.id.textWelcome);
-
         Intent intent = getIntent();
 
- //       getSupportActionBar().setTitle(intent.getStringExtra("person"));
-        textWelcome.setText("Welcome "+intent.getStringExtra("person")+"!");
+        initToolbar();
+        toolbar.setTitle(intent.getStringExtra("person"));
 
-        Button btnQuit = (Button)findViewById(R.id.btnQuit);
+    }
 
-        btnQuit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              finish();
-            }
-        });
+    private void initToolbar() {
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
 
-
+        toolbar.inflateMenu(R.menu.menu);
 
     }
 

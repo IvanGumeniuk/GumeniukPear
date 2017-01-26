@@ -22,7 +22,8 @@
         android:layout_marginEnd="57dp"
         android:layout_marginTop="31dp"
         android:id="@+id/textLogin"
-        android:hint="Login" />
+        android:hint="Login"
+        android:text="Qwerty" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -34,7 +35,8 @@
         android:layout_alignEnd="@+id/textLogin"
         android:layout_marginTop="20dp"
         android:id="@+id/textPassword"
-        android:hint="Password" />
+        android:hint="Password"
+        android:text="qwerty" />
 
     <Button
         android:text="Registration"

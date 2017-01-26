@@ -9,10 +9,17 @@
     tools:context="com.course.threeactivitieslogregwel.WelActivity">
 
 
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
     <fragment
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:name="com.course.threeactivitieslogregwel.WelFragment"
         android:id="@+id/fragment"
         tools:layout="@layout/fragment_wel" />
+
 </LinearLayout>
