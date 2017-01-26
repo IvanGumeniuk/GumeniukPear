@@ -2,6 +2,7 @@ package com.course.threeactivitieslogregwel;
 
 
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,7 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class WelActivity extends AppCompatActivity {
+public class WelActivity extends FragmentActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +24,7 @@ public class WelActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        getSupportActionBar().setTitle(intent.getStringExtra("person"));
+ //       getSupportActionBar().setTitle(intent.getStringExtra("person"));
         textWelcome.setText("Welcome "+intent.getStringExtra("person")+"!");
 
         Button btnQuit = (Button)findViewById(R.id.btnQuit);
