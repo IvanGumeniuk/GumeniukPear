@@ -29,13 +29,13 @@ public class RegActivity extends AppCompatActivity {
 
         btnRegistration = (Button)findViewById(R.id.btnRegistration);
 
-
         app = ((MyApplicationClass)getApplicationContext());
 
 
         btnRegistration.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                login.setText(login.getText().toString().trim());
                 if(app.checkingPerson(login,password,rep_password))
                 {
                     app.addNewPerson(login,password);

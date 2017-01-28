@@ -23,7 +23,7 @@ public class WelActivity extends FragmentActivity {
         Intent intent = getIntent();
 
         initToolbar();
-        toolbar.setTitle(intent.getStringExtra("person"));
+        toolbar.setTitle(intent.getStringExtra(getString(R.string.SPFileName)));
 
     }
 

@@ -1,9 +1,8 @@
 package com.course.threeactivitieslogregwel;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,10 +40,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btnSingIn:
                 if (app.isPerson(login) && app.checkPassword(login,password)) {
                     Intent intent = new Intent(this, WelActivity.class);
-                    intent.putExtra("person", login.getText().toString());
+                    intent.putExtra(getString(R.string.SPFileName), login.getText().toString());
                     startActivity(intent);
                     finish();
-                } else Toast.makeText(this, "Wrong login or password", Toast.LENGTH_SHORT).show();
+                } else Toast.makeText(this, R.string.WrongLogPass, Toast.LENGTH_SHORT).show();
                 break;
 
             case R.id.btnSingUp:

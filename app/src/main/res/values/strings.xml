@@ -1,4 +1,13 @@
 <resources>
     <string name="app_name">ThreeActivitiesLogRegWel</string>
     <string name="search_title">Search</string>
+    <string name="SPFileName">person</string>
+    <string name="WrongLogPass">Wrong login or password</string>
+    <string name="welcome">"Welcome"</string>
+    <string name="newPerson">"New person "</string>
+    <string name="wasRegistered">" was registered"</string>
+    <string name="alreadyExist">This person already exists</string>
+    <string name="shortLogin">Login is too short (min 3 symbols)</string>
+    <string name="shotrPassword">Password is too short (min 5 symbols)</string>
+    <string name="PassDontMatch">Passwords don`t match</string>
 </resources>
