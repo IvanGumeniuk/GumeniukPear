@@ -73,12 +73,9 @@ public class WelActivity extends AppCompatActivity {
 
             @Override
             public boolean onCreateOptionsMenu(Menu menu) {
-                Toast.makeText(WelActivity.this, "onQuerryTextChange", Toast.LENGTH_SHORT).show();
 
                 MenuInflater inflater = getMenuInflater();
                 inflater.inflate(R.menu.search_menu,menu);
-
-                Toast.makeText(WelActivity.this, "listener", Toast.LENGTH_SHORT).show();
 
                 MenuItem menuItem = menu.findItem(R.id.search);
                 SearchView searchView = (SearchView) menuItem.getActionView();
