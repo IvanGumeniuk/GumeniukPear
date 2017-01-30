@@ -29,26 +29,24 @@ public class WelActivity extends AppCompatActivity {
     private ArrayList<RecyclerItem> listItems;
     private FloatingActionButton floatButton;
     private String dialogEditPressed = "";
+    private MyApplicationClass app;
+    private Intent intent;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wel);
 
-        Intent intent = getIntent();
+        intent = getIntent();
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(intent.getStringExtra(getString(R.string.SPFileName)));
-
-
-
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         floatButton = (FloatingActionButton)findViewById(R.id.float_btn);
-
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,17 +55,14 @@ public class WelActivity extends AppCompatActivity {
         });
 
         listItems = new ArrayList<>();
-        //Generate sample data
 
-        for (int i = 0; i<10; i++) {
-            listItems.add(new RecyclerItem("Pear " + (i + 1)));
-        }
+        app = ((MyApplicationClass)getApplicationContext());
+
+        listItems = app.JSONData(listItems,intent.getStringExtra(getString(R.string.SPFileName)),false);
 
         //Set adapter
         adapter = new MyAdapter(listItems, this);
         recyclerView.setAdapter(adapter);
-
-
 
     }
 
@@ -97,7 +92,7 @@ public class WelActivity extends AppCompatActivity {
                 return super.onCreateOptionsMenu(menu);
             }
 
-    public void onPressFloatingButton(){
+            public void onPressFloatingButton(){
 
         final   AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("New item");
@@ -115,6 +110,8 @@ public class WelActivity extends AppCompatActivity {
                 listItems.add(new RecyclerItem(dialogEditPressed));
                 adapter.notifyDataSetChanged();
                 Toast.makeText(WelActivity.this, "Created new item "+dialogEditPressed, Toast.LENGTH_SHORT).show();
+
+                app.JSONData(listItems,intent.getStringExtra(getString(R.string.SPFileName)),true);
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -124,7 +121,11 @@ public class WelActivity extends AppCompatActivity {
             }
         });
         builder.show();
-
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        app.JSONData(adapter.getListItems(),intent.getStringExtra(getString(R.string.SPFileName)),true);
+    }
 }

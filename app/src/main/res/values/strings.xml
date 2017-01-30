@@ -10,4 +10,5 @@
     <string name="shortLogin">Login is too short (min 3 symbols)</string>
     <string name="shotrPassword">Password is too short (min 5 symbols)</string>
     <string name="PassDontMatch">Passwords don`t match</string>
+    <string name="UserData">User_data</string>
 </resources>
