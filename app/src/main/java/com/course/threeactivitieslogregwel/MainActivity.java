@@ -3,12 +3,15 @@ package com.course.threeactivitieslogregwel;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private Toolbar toolbar;
 
     Button btnSingIn, btnSingUp;
     EditText login, password;
@@ -18,6 +21,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Login");
+
 
 
         btnSingIn = (Button) findViewById(R.id.btnSingIn);
@@ -32,6 +41,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         app = ((MyApplicationClass)getApplicationContext());
 
     }
+
+
+
+
 
     @Override
     public void onClick(View v) {
