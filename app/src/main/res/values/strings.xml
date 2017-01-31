@@ -8,7 +8,16 @@
     <string name="wasRegistered">" was registered"</string>
     <string name="alreadyExist">This person already exists</string>
     <string name="shortLogin">Login is too short (min 3 symbols)</string>
-    <string name="shotrPassword">Password is too short (min 5 symbols)</string>
+    <string name="shortPassword">Password is too short (min 5 symbols)</string>
     <string name="PassDontMatch">Passwords don`t match</string>
     <string name="UserData">User_data</string>
+    <string name="newName">New name</string>
+    <string name="Ok">OK</string>
+    <string name="Edited">Edited</string>
+    <string name="Cancel">Cancel</string>
+    <string name="YouWantToDeleteItem">You want to delete item \'</string>
+    <string name="AreYouSure">\' Are you sure?</string>
+    <string name="Deleted">Deleted</string>
+    <string name="Login">Login</string>
+    <string name="Registration">Registration</string>
 </resources>

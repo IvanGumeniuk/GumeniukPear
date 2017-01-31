@@ -38,6 +38,7 @@ public class WelActivity extends AppCompatActivity {
         setContentView(R.layout.activity_wel);
 
         intent = getIntent();
+
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(intent.getStringExtra(getString(R.string.SPFileName)));
@@ -69,8 +70,8 @@ public class WelActivity extends AppCompatActivity {
             @Override
             public boolean onCreateOptionsMenu(Menu menu) {
 
-                MenuInflater inflater = getMenuInflater();
-                inflater.inflate(R.menu.search_menu,menu);
+                    MenuInflater inflater = getMenuInflater();
+                    inflater.inflate(R.menu.search_menu,menu);
 
                 MenuItem menuItem = menu.findItem(R.id.search);
                 SearchView searchView = (SearchView) menuItem.getActionView();

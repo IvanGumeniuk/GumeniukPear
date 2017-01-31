@@ -22,7 +22,7 @@ public class RegActivity extends AppCompatActivity {
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Registration");
+        getSupportActionBar().setTitle(R.string.Registration);
 
         login = (EditText)findViewById(R.id.textNewLogin);
         login.requestFocus();
