@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.course.threeactivitieslogregwel.MainActivity">
+    tools:context="com.gumeniuk.pear.MainActivity">
 
     <include
         android:id="@+id/toolbar"
@@ -30,8 +30,7 @@
         android:layout_marginEnd="57dp"
         android:layout_marginTop="31dp"
         android:id="@+id/textLogin"
-        android:hint="Login"
-        android:text="Qwertya" />
+        android:hint="Login" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -43,8 +42,7 @@
         android:layout_alignEnd="@+id/textLogin"
         android:layout_marginTop="20dp"
         android:id="@+id/textPassword"
-        android:hint="Password"
-        android:text="qwerty" />
+        android:hint="Password" />
 
     <Button
         android:text="Registration"

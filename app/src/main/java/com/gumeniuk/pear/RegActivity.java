@@ -1,4 +1,4 @@
-package com.course.threeactivitieslogregwel;
+package com.gumeniuk.pear;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

@@ -1,4 +1,4 @@
-package com.course.threeactivitieslogregwel;
+package com.gumeniuk.pear;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

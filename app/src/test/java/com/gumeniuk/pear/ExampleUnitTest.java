@@ -1,4 +1,4 @@
-package com.course.threeactivitieslogregwel;
+package com.gumeniuk.pear;
 
 import org.junit.Test;
 
