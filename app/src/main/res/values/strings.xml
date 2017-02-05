@@ -21,4 +21,6 @@
     <string name="Login">Login</string>
     <string name="Registration">Registration</string>
     <string name="quit">Quit</string>
+    <string name="CreatedNewItem">"Created new item "</string>
+    <string name="NewItem">New item</string>
 </resources>

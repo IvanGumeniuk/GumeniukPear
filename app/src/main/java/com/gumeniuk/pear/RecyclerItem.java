@@ -16,4 +16,14 @@ public class RecyclerItem {
         this.itemName = itemName;
     }
 
+    public RecyclerItem(){
+
+    }
+
+    @Override
+    public String toString() {
+        return "RecyclerItem{" +
+                "itemName='" + itemName + '\'' +
+                '}';
+    }
 }

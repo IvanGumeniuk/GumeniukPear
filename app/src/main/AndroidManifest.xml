@@ -10,7 +10,7 @@
         android:label="Login"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.gumeniuk.pear.MainActivity">
+        <activity android:name="com.gumeniuk.pear.Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,10 +18,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.gumeniuk.pear.RegActivity"
+            android:name="com.gumeniuk.pear.Activities.RegActivity"
             android:label="Registration" />
         <activity
-            android:name="com.gumeniuk.pear.WelActivity"
+            android:name="com.gumeniuk.pear.Activities.WelActivity"
             android:label="Welcome" />
     </application>
 

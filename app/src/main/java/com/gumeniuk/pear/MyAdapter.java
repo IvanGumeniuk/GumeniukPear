@@ -155,7 +155,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         builder.show();
     }
 
-    public void filter(String charText) {
+    public void searchFilter(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
         listItems = new ArrayList<>();
         if (charText.length() == 0) {

@@ -16,6 +16,15 @@ public class MyApplicationClass extends Application {
 
     SharedPreferences person;
     SharedPreferences.Editor edit;
+    private MyAdapter adapter;
+
+    public MyAdapter getAdapter() {
+        return adapter;
+    }
+
+    public void setAdapter(MyAdapter adapter) {
+        this.adapter = adapter;
+    }
 
     @Override
     public void onCreate() {
@@ -30,7 +39,6 @@ public class MyApplicationClass extends Application {
 
         Toast.makeText(this, getString(R.string.newPerson)+login.getText().toString()+getString(R.string.wasRegistered), Toast.LENGTH_SHORT).show();
     }
-
 
     public boolean isPerson(EditText login) {
         return person.contains(login.getText().toString());
@@ -108,7 +116,9 @@ public class MyApplicationClass extends Application {
     }
 
 
-    public ArrayList<RecyclerItem> JSONData(ArrayList<RecyclerItem> list, String userName, boolean write_read){
+    public ArrayList<RecyclerItem> JSONData(ArrayList<RecyclerItem> list, String userName, boolean record_read){
+
+
 
             SharedPreferences preferences = getSharedPreferences(userName, MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
@@ -116,7 +126,10 @@ public class MyApplicationClass extends Application {
             JSONObject object = new JSONObject();
             JSONArray itemArray = new JSONArray();
 
-        if(write_read) {
+
+          /**if record_read == true then data will be recorded to JSON
+                else data will be read from JSON*/
+        if(record_read) {
             try {
                 for (int i = 0; i < list.size(); i++)
                     itemArray.put(i, list.get(i).getItemName());
@@ -129,7 +142,7 @@ public class MyApplicationClass extends Application {
             editor.apply();
         }
         else
-            if(!write_read) {
+            if(!record_read) {
                 try {
                     object = new JSONObject(preferences.getString(getString(R.string.UserData), ""));
 
