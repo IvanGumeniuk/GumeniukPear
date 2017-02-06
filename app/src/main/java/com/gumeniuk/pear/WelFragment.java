@@ -21,10 +21,8 @@ import java.util.ArrayList;
 
 public class WelFragment extends Fragment {
 
-    private RecyclerView recyclerView;
     private ArrayList<RecyclerItem> listItems;
     private MyApplicationClass app;
-    private FloatingActionButton floatButton;
     private String dialogEditPressed = "";
 
     @Nullable
@@ -33,11 +31,11 @@ public class WelFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_wel, container, false);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        floatButton = (FloatingActionButton)view.findViewById(R.id.float_btn);
+        FloatingActionButton floatButton = (FloatingActionButton) view.findViewById(R.id.float_btn);
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,28 +70,28 @@ public class WelFragment extends Fragment {
 
 
     public void onPressFloatingButton(){
-        
+
         final   AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("New item");
+        builder.setTitle(getString(R.string.NewItem));
 
         final EditText input = new EditText(getContext());
 
         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
         builder.setView(input);
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.Ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
                 dialogEditPressed = input.getText().toString().trim();
                 listItems.add(new RecyclerItem(dialogEditPressed));
                 app.getAdapter().notifyDataSetChanged();
-                Toast.makeText(getContext(), "Created new item "+dialogEditPressed, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.CreatedNewItem)+dialogEditPressed, Toast.LENGTH_SHORT).show();
 
                 app.JSONData(listItems,getActivity().getIntent().getStringExtra(getString(R.string.SPFileName)),true);
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();

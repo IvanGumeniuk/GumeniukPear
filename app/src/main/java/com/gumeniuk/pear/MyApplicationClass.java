@@ -57,14 +57,14 @@ public class MyApplicationClass extends Application {
 
         for (int i=0;i<log.length();i++) {
             if(log.codePointAt(i)>255){
-                Toast.makeText(this, "Login contains invalid symbols", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.LoginContainInvalidSymbols, Toast.LENGTH_LONG).show();
                 return false;
             }
         }
 
         for (int i=0;i<pass.length();i++) {
             if(pass.codePointAt(i)>255){
-                Toast.makeText(this, "Password contains invalid symbols", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.PasswordContainInvalidSymbols, Toast.LENGTH_LONG).show();
                 return false;
             }
         }
@@ -117,8 +117,6 @@ public class MyApplicationClass extends Application {
 
 
     public ArrayList<RecyclerItem> JSONData(ArrayList<RecyclerItem> list, String userName, boolean record_read){
-
-
 
             SharedPreferences preferences = getSharedPreferences(userName, MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();

@@ -17,21 +17,19 @@ public class WelActivity extends AppCompatActivity {
 
     public Toolbar toolbar;
     private MyApplicationClass app;
-    private Intent intent;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wel);
 
-        intent = getIntent();
+        Intent intent = getIntent();
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(intent.getStringExtra(getString(R.string.SPFileName)));
+
         app = ((MyApplicationClass) getApplicationContext());
-
-
     }
 
 

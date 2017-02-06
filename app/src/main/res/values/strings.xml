@@ -23,4 +23,6 @@
     <string name="quit">Quit</string>
     <string name="CreatedNewItem">"Created new item "</string>
     <string name="NewItem">New item</string>
+    <string name="LoginContainInvalidSymbols">Login contains invalid symbols</string>
+    <string name="PasswordContainInvalidSymbols">Password contains invalid symbols</string>
 </resources>
