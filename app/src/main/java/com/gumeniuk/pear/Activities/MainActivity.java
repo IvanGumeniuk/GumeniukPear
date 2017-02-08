@@ -26,11 +26,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
 
+
+        app = ((MyApplicationClass)getApplicationContext());
+
+        if(app.isLogged() && !app.getEnteringLogin().equals("")){
+            startWelcome();
+        }
+
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.Login);
-
-
 
         btnSingIn = (Button) findViewById(R.id.btnSingIn);
         btnSingIn.setOnClickListener(this);
@@ -40,9 +45,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         login = (EditText) findViewById(R.id.textLogin);
         password = (EditText) findViewById(R.id.textPassword);
-
-        app = ((MyApplicationClass)getApplicationContext());
-
     }
 
 
@@ -55,10 +57,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btnSingIn:
                 if (app.isPerson(login) && app.checkPassword(login,password)) {
-                    Intent intent = new Intent(this, WelActivity.class);
-                    intent.putExtra(getString(R.string.SPFileName), login.getText().toString());
-                    startActivity(intent);
-                    finish();
+                    app.entering(login);
+                    app.setUserLogin(login.getText().toString().trim());
+                    startWelcome();
                 } else Toast.makeText(this, R.string.WrongLogPass, Toast.LENGTH_SHORT).show();
                 break;
 
@@ -70,6 +71,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
 
+    }
+
+    private void startWelcome(){
+        Intent intent = new Intent(this, WelActivity.class);
+        app.setUserLogin(app.getEnteringLogin());
+        startActivity(intent);
+        finish();
     }
 
 }

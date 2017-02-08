@@ -25,4 +25,6 @@
     <string name="NewItem">New item</string>
     <string name="LoginContainInvalidSymbols">Login contains invalid symbols</string>
     <string name="PasswordContainInvalidSymbols">Password contains invalid symbols</string>
+    <string name="logged">logged</string>
+    <string name="user">user</string>
 </resources>

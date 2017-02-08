@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gumeniuk.pear.Database.RecyclerItem;
+
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -23,14 +25,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private ArrayList<RecyclerItem> listItems;
     private ArrayList<RecyclerItem> copyListItems;
     private Context mContext;
+    private String userLogin;
+    private MyApplicationClass app;
+
 
     private String dialogEditPressed = "";
 
 
-    public MyAdapter(ArrayList<RecyclerItem> listItems, Context mContext) {
+    public MyAdapter(ArrayList<RecyclerItem> listItems, Context mContext, MyApplicationClass app) {
         this.listItems = listItems;
         this.mContext = mContext;
         this.copyListItems = this.listItems;
+        this.app = app;
     }
 
     public ArrayList<RecyclerItem> getListItems() {
@@ -55,6 +61,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_item, parent, false);
+
         return new ViewHolder(v);
     }
 
@@ -93,8 +100,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 popupMenu.show();
             }
         });
-
-
     }
 
 
@@ -118,7 +123,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             public void onClick(DialogInterface dialog, int which) {
 
                 dialogEditPressed = input.getText().toString().trim();
-                listItems.set(position,new RecyclerItem(dialogEditPressed));
+                app.updateRealmData(listItems.get(position), dialogEditPressed);
+                listItems.set(position,app.getRecyclerItemFromRealmData(listItems.get(position).getId()));
+
                 notifyDataSetChanged();
                 Toast.makeText(mContext, R.string.Edited, Toast.LENGTH_SHORT).show();
             }
@@ -141,6 +148,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
+                app.removeFromRealmData(listItems.get(position).getId());
                 listItems.remove(position);
                 notifyDataSetChanged();
                 Toast.makeText(mContext, R.string.Deleted, Toast.LENGTH_SHORT).show();

@@ -61,5 +61,14 @@
         android:layout_below="@+id/textRepeatPassword"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="44dp" />
+
+    <Button
+        android:text="Back to Login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:id="@+id/backToLogin"
+        android:layout_below="@+id/btnRegistration"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
 </LinearLayout>

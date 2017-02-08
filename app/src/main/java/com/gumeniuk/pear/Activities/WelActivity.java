@@ -1,7 +1,6 @@
 package com.gumeniuk.pear.Activities;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
@@ -16,20 +15,21 @@ import com.gumeniuk.pear.R;
 public class WelActivity extends AppCompatActivity {
 
     public Toolbar toolbar;
-    private MyApplicationClass app;
+    private MyApplicationClass app;;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_wel);
 
-        Intent intent = getIntent();
+        app = ((MyApplicationClass) getApplicationContext());
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(intent.getStringExtra(getString(R.string.SPFileName)));
+        getSupportActionBar().setTitle(app.getUserLogin());
 
-        app = ((MyApplicationClass) getApplicationContext());
+
+
     }
 
 
@@ -59,6 +59,7 @@ public class WelActivity extends AppCompatActivity {
 
         return super.onCreateOptionsMenu(menu);
     }
+
 
 
 }

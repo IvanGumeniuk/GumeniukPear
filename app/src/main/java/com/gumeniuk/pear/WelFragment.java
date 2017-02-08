@@ -16,26 +16,36 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.gumeniuk.pear.Database.RecyclerItem;
+
 import java.util.ArrayList;
+import java.util.UUID;
+
+import io.realm.Realm;
 
 
 public class WelFragment extends Fragment {
 
+    private RecyclerView recyclerView;
     private ArrayList<RecyclerItem> listItems;
     private MyApplicationClass app;
+    private FloatingActionButton floatButton;
     private String dialogEditPressed = "";
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        app = ((MyApplicationClass)getActivity().getApplicationContext());
+        app.setRealm(Realm.getDefaultInstance());
+
         View view = inflater.inflate(R.layout.fragment_wel, container, false);
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        FloatingActionButton floatButton = (FloatingActionButton) view.findViewById(R.id.float_btn);
+        floatButton = (FloatingActionButton)view.findViewById(R.id.float_btn);
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,12 +53,12 @@ public class WelFragment extends Fragment {
             }
         });
 
-        app = ((MyApplicationClass)getActivity().getApplicationContext());
+
         listItems = new ArrayList<>();
-        listItems = app.JSONData(listItems,getActivity().getIntent().getStringExtra(getString(R.string.SPFileName)),false);
+        listItems = app.getRealmData();
 
         //Set adapter
-        app.setAdapter(new MyAdapter(listItems, getActivity()));
+        app.setAdapter(new MyAdapter(listItems, getActivity(), app));
         recyclerView.setAdapter(app.getAdapter());
 
         return view;
@@ -61,6 +71,7 @@ public class WelFragment extends Fragment {
         btnQuit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                app.logOut();
                 getActivity().finish();
             }
         });
@@ -72,26 +83,26 @@ public class WelFragment extends Fragment {
     public void onPressFloatingButton(){
 
         final   AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(getString(R.string.NewItem));
+        builder.setTitle("New item");
 
         final EditText input = new EditText(getContext());
 
         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
         builder.setView(input);
 
-        builder.setPositiveButton(getString(R.string.Ok), new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
                 dialogEditPressed = input.getText().toString().trim();
-                listItems.add(new RecyclerItem(dialogEditPressed));
+                listItems.add(new RecyclerItem(UUID.randomUUID().toString(),dialogEditPressed, app.getUserLogin()));
                 app.getAdapter().notifyDataSetChanged();
-                Toast.makeText(getContext(), getString(R.string.CreatedNewItem)+dialogEditPressed, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Created new item "+dialogEditPressed, Toast.LENGTH_SHORT).show();
 
-                app.JSONData(listItems,getActivity().getIntent().getStringExtra(getString(R.string.SPFileName)),true);
+                app.setRealmData(app.getAdapter().getListItems());
             }
         });
-        builder.setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -103,6 +114,6 @@ public class WelFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        app.JSONData(app.getAdapter().getListItems(),getActivity().getIntent().getStringExtra(getString(R.string.SPFileName)),true);
+        app.getRealm().close();
     }
 }

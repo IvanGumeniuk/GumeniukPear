@@ -13,7 +13,7 @@ import com.gumeniuk.pear.R;
 public class RegActivity extends AppCompatActivity {
 
     EditText login,password,rep_password;
-    Button btnRegistration;
+    Button btnRegistration, backToLogin;
     MyApplicationClass app;
     private Toolbar toolbar;
 
@@ -33,8 +33,16 @@ public class RegActivity extends AppCompatActivity {
         rep_password = (EditText)findViewById(R.id.textRepeatPassword);
 
         btnRegistration = (Button)findViewById(R.id.btnRegistration);
+        backToLogin = (Button)findViewById(R.id.backToLogin);
 
         app = ((MyApplicationClass)getApplicationContext());
+
+        backToLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
 
         btnRegistration.setOnClickListener(new View.OnClickListener() {
