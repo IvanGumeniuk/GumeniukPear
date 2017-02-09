@@ -180,14 +180,11 @@ public class MyApplicationClass extends Application {
 
     public void setRealmData(final ArrayList <RecyclerItem> items){
 
-        final ArrayList<RecyclerItem> recyclerItems = getRealmData();
-        recyclerItems.addAll(items);
-
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 RealmList<RecyclerItem> realmList = new RealmList<RecyclerItem>();
-                realmList.addAll(recyclerItems);
+                realmList.addAll(items);
                 realm.copyToRealmOrUpdate(realmList);
             }
         });
@@ -197,7 +194,7 @@ public class MyApplicationClass extends Application {
         ArrayList<RecyclerItem> recyclerItems = new ArrayList<>();
 
         realm.beginTransaction();
-        RealmResults<RecyclerItem> result = realm.where(RecyclerItem.class).equalTo("itemUserName", getUserLogin()).findAll();
+        RealmResults<RecyclerItem> result = realm.where(RecyclerItem.class).equalTo(getString(R.string.itemUserName), getUserLogin()).findAll();
         recyclerItems.addAll(result);
         realm.commitTransaction();
         return recyclerItems;
@@ -207,7 +204,7 @@ public class MyApplicationClass extends Application {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                RealmResults<RecyclerItem> result = realm.where(RecyclerItem.class).equalTo("id", id).findAll();
+                RealmResults<RecyclerItem> result = realm.where(RecyclerItem.class).equalTo(getString(R.string.id), id).findAll();
                 result.deleteAllFromRealm();
             }
         });
@@ -217,7 +214,7 @@ public class MyApplicationClass extends Application {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                RecyclerItem result = realm.where(RecyclerItem.class).equalTo("id", item.getId()).findFirst();
+                RecyclerItem result = realm.where(RecyclerItem.class).equalTo(getString(R.string.id), item.getId()).findFirst();
                 result.setItemName(newName);
             }
         });
@@ -228,7 +225,7 @@ public class MyApplicationClass extends Application {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-               result[0] = realm.where(RecyclerItem.class).equalTo("id", id ).findFirst();
+               result[0] = realm.where(RecyclerItem.class).equalTo(getString(R.string.id), id ).findFirst();
 
             }
         });

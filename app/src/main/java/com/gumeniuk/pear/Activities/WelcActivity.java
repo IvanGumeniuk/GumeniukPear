@@ -31,6 +31,8 @@ public class WelcActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(app.getUserLogin());
 
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -86,6 +88,10 @@ public class WelcActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         item.setChecked(true);
+
+        //TextView header = (TextView) findViewById(R.id.headerText);
+        //header.setText(app.getUserLogin());
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         int id = item.getItemId();
@@ -94,6 +100,7 @@ public class WelcActivity extends AppCompatActivity
             app.logOut();
             finish();
         }
+
 
 
         return true;

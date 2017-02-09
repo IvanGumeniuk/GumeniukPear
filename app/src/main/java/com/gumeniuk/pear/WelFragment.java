@@ -83,26 +83,26 @@ public class WelFragment extends Fragment {
     public void onPressFloatingButton(){
 
         final   AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("New item");
+        builder.setTitle(getString(R.string.NewItem));
 
         final EditText input = new EditText(getContext());
 
         input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
         builder.setView(input);
 
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.Ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
                 dialogEditPressed = input.getText().toString().trim();
                 listItems.add(new RecyclerItem(UUID.randomUUID().toString(),dialogEditPressed, app.getUserLogin()));
                 app.getAdapter().notifyDataSetChanged();
-                Toast.makeText(getContext(), "Created new item "+dialogEditPressed, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), getString(R.string.CreatedNewItem)+dialogEditPressed, Toast.LENGTH_SHORT).show();
 
                 app.setRealmData(app.getAdapter().getListItems());
             }
         });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
