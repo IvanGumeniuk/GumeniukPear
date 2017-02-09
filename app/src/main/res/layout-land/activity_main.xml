@@ -20,16 +20,6 @@
             android:layout_height="wrap_content">
 
             <Button
-                android:text="Login"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/btnSingIn"
-                style="@android:style/Widget.Button"
-                android:layout_marginTop="45dp"
-                android:layout_below="@+id/textPassword"
-                android:layout_centerHorizontal="true" />
-
-            <Button
                 android:text="Registration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -62,6 +52,26 @@
                 android:layout_alignParentTop="true"
                 android:layout_alignLeft="@+id/textPassword"
                 android:layout_alignStart="@+id/textPassword" />
+
+            <Button
+                android:text="Login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnSingIn"
+                style="@android:style/Widget.Button"
+                android:layout_marginTop="22dp"
+                android:layout_below="@+id/textPassword"
+                android:layout_centerHorizontal="true" />
+
+            <Button
+                android:text="Exit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/exit"
+                android:layout_below="@+id/btnSingUp"
+                android:layout_alignLeft="@+id/btnSingIn"
+                android:layout_alignStart="@+id/btnSingIn"
+                style="@android:style/Widget.Button" />
         </RelativeLayout>
     </ScrollView>
 

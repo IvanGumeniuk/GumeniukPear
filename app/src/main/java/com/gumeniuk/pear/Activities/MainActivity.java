@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Toolbar toolbar;
 
-    Button btnSingIn, btnSingUp;
+    Button btnSingIn, btnSingUp, btnExit;
     EditText login, password;
     MyApplicationClass app;
 
@@ -43,12 +43,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnSingUp = (Button) findViewById(R.id.btnSingUp);
         btnSingUp.setOnClickListener(this);
 
+        btnExit = (Button) findViewById(R.id.exit);
+        btnExit.setOnClickListener(this);
+
         login = (EditText) findViewById(R.id.textLogin);
         password = (EditText) findViewById(R.id.textPassword);
     }
-
-
-
 
 
     @Override
@@ -65,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.btnSingUp:
                 startActivity(new Intent(this, RegActivity.class));
+
+            case R.id.exit:
+                finish();
                 break;
 
             default:
