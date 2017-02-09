@@ -27,4 +27,11 @@
     <string name="PasswordContainInvalidSymbols">Password contains invalid symbols</string>
     <string name="logged">logged</string>
     <string name="user">user</string>
+    <string name="title_activity_welc">WelcActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="logout">LogOut</string>
 </resources>

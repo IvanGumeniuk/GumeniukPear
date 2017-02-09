@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.gumeniuk.pear">
 
     <application
-        android:name="com.gumeniuk.pear.MyApplicationClass"
+        android:name=".MyApplicationClass"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="Login"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.gumeniuk.pear.Activities.MainActivity">
+        <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,11 +17,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.gumeniuk.pear.Activities.RegActivity"
+            android:name=".Activities.RegActivity"
             android:label="Registration" />
         <activity
-            android:name="com.gumeniuk.pear.Activities.WelActivity"
-            android:label="Welcome" />
+            android:name=".Activities.WelcActivity"
+            android:label="@string/title_activity_welc"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

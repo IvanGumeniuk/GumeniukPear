@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void startWelcome(){
-        Intent intent = new Intent(this, WelActivity.class);
+        Intent intent = new Intent(this, WelcActivity.class);
         app.setUserLogin(app.getEnteringLogin());
         startActivity(intent);
         finish();
