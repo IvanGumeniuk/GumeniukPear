@@ -80,4 +80,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         finish();
     }
 
+    @Override
+    protected void onResume() {
+        if(app.isLogged() && !app.getEnteringLogin().equals("")){
+            finish();
+        }
+        super.onResume();
+    }
 }

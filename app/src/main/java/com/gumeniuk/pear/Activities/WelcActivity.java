@@ -32,7 +32,6 @@ public class WelcActivity extends AppCompatActivity
         getSupportActionBar().setTitle(app.getUserLogin());
 
 
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -100,9 +99,6 @@ public class WelcActivity extends AppCompatActivity
             app.logOut();
             finish();
         }
-
-
-
         return true;
     }
 }

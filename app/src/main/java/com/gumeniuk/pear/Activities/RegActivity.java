@@ -1,5 +1,6 @@
 package com.gumeniuk.pear.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -52,6 +53,9 @@ public class RegActivity extends AppCompatActivity {
                 if(app.checkingPerson(login,password,rep_password))
                 {
                     app.addNewPerson(login,password);
+                    app.entering(login);
+                    app.setUserLogin(login.getText().toString().trim());
+                    startActivity(new Intent(RegActivity.this, WelcActivity.class));
                     finish();
                 }
             }
