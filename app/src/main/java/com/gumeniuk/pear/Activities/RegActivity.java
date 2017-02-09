@@ -20,7 +20,6 @@ public class RegActivity extends AppCompatActivity {
     EditText login,password,rep_password;
     Button btnRegistration, backToLogin;
     MyApplicationClass app;
-    private Toolbar toolbar;
 
 
     @Override
@@ -28,7 +27,7 @@ public class RegActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reg);
 
-        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.Registration);
 
