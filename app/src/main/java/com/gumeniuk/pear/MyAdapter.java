@@ -2,6 +2,7 @@ package com.gumeniuk.pear;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,12 +27,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private ArrayList<RecyclerItem> listItems;
     private ArrayList<RecyclerItem> copyListItems;
     private Context mContext;
-    private String userLogin;
     private MyApplicationClass app;
-
-
-    private String dialogEditPressed = "";
-
 
     public MyAdapter(ArrayList<RecyclerItem> listItems, Context mContext, MyApplicationClass app) {
         this.listItems = listItems;
@@ -42,21 +39,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public ArrayList<RecyclerItem> getListItems() {
         return listItems;
     }
-
-    public class ViewHolder extends RecyclerView.ViewHolder{
-
-        public TextView txtTitle;
-        public ImageView imageOption;
-
-
-        public ViewHolder(View itemView) {
-            super(itemView);
-            txtTitle = (TextView) itemView.findViewById(R.id.txtTitle);
-            imageOption = (ImageView) itemView.findViewById(R.id.imageOption);
-        }
-    }
-
-
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -70,6 +52,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         final RecyclerItem itemList = listItems.get(position);
         holder.txtTitle.setText(itemList.getItemName());
+        holder.txtPhoneNumber.setText(itemList.getItemPhoneNumber());
         holder.imageOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,14 +65,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
                         switch (item.getItemId()) {
                             case R.id.pop_menu_item_edit:
-
                                 dialogClickEdit(position);
-
                                 break;
                             case R.id.pop_menu_item_delete:
-
                                 dialogClickDelete(position);
-
                                 break;
                             default:
                                 break;
@@ -102,29 +81,39 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         });
     }
 
-
     @Override
     public int getItemCount() {
         return listItems.size();
     }
 
-    public void dialogClickEdit(final int position){
+    public void dialogClickEdit(final int position) {
 
-        final   AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle(R.string.newName);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle(R.string.edit);
 
-        final EditText input = new EditText(mContext);
+        LinearLayout layout = new LinearLayout(mContext);
+        layout.setOrientation(LinearLayout.VERTICAL);
 
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-        builder.setView(input);
+        final EditText inputName = new EditText(mContext);
+        final EditText inputPhoneNumber = new EditText(mContext);
+
+        inputName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+        inputName.setHint(R.string.newName);
+        inputName.setHintTextColor(ContextCompat.getColor(mContext,R.color.grey));
+        inputPhoneNumber.setInputType(InputType.TYPE_CLASS_PHONE);
+        inputPhoneNumber.setHint(R.string.new_phone_number);
+        inputPhoneNumber.setHintTextColor(ContextCompat.getColor(mContext,R.color.grey));
+
+        layout.addView(inputName);
+        layout.addView(inputPhoneNumber);
+        builder.setView(layout);
 
         builder.setPositiveButton(R.string.Ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
-                dialogEditPressed = input.getText().toString().trim();
-                app.updateRealmData(listItems.get(position), dialogEditPressed);
-                listItems.set(position,app.getRecyclerItemFromRealmData(listItems.get(position).getId()));
+                app.updateRealmData(listItems.get(position), inputName.getText().toString().trim(), inputPhoneNumber.getText().toString().trim());
+                listItems.set(position, app.getRecyclerItemFromRealmData(listItems.get(position).getId()));
 
                 notifyDataSetChanged();
                 Toast.makeText(mContext, R.string.Edited, Toast.LENGTH_SHORT).show();
@@ -139,10 +128,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         builder.show();
     }
 
-    public void dialogClickDelete(final int position){
+    public void dialogClickDelete(final int position) {
 
-        final   AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-        builder.setTitle(mContext.getString(R.string.YouWantToDeleteItem)+listItems.get(position).getItemName().toString()+mContext.getString(R.string.AreYouSure));
+        final AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle(mContext.getString(R.string.YouWantToDeleteItem) + listItems.get(position).getItemName().toString() + mContext.getString(R.string.AreYouSure));
 
         builder.setPositiveButton(mContext.getString(R.string.Ok), new DialogInterface.OnClickListener() {
             @Override
@@ -176,6 +165,21 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             }
         }
         notifyDataSetChanged();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView txtTitle;
+        public TextView txtPhoneNumber;
+        public ImageView imageOption;
+
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            txtTitle = (TextView) itemView.findViewById(R.id.txtTitle);
+            txtPhoneNumber = (TextView) itemView.findViewById(R.id.txtPhoneNumber);
+            imageOption = (ImageView) itemView.findViewById(R.id.imageOption);
+        }
     }
 
 }

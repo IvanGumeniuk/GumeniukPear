@@ -36,4 +36,11 @@
     <string name="logout">LogOut</string>
     <string name="itemUserName">itemUserName</string>
     <string name="id">id</string>
+    <string name="edit">Edit</string>
+    <string name="name">Name</string>
+    <string name="phone_number">Phone number</string>
+    <string name="with_number">" \n with number :"</string>
+    <string name="new_phone_number">new Phone number</string>
+    <string name="contacts">Contacts</string>
+    <string name="weather">Weather</string>
 </resources>

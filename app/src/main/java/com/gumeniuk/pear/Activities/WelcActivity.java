@@ -1,5 +1,6 @@
 package com.gumeniuk.pear.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -11,9 +12,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gumeniuk.pear.MyApplicationClass;
 import com.gumeniuk.pear.R;
+import com.gumeniuk.pear.WelFragment;
 
 public class WelcActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -40,6 +45,10 @@ public class WelcActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View header = navigationView.getHeaderView(0);
+        TextView head = (TextView) header.findViewById(R.id.headerText);
+        head.setText(app.getUserLogin());
     }
 
     @Override
@@ -88,17 +97,28 @@ public class WelcActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         item.setChecked(true);
 
-        //TextView header = (TextView) findViewById(R.id.headerText);
-        //header.setText(app.getUserLogin());
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         int id = item.getItemId();
 
         if (id == R.id.session_finish) {
             app.logOut();
+            startActivity(new Intent(this,MainActivity.class));
             finish();
+        }else
+        if(id == R.id.showContacts)
+        {
+            if(app.getIsContacts()) return true;
+            else{
+                WelFragment welFragment = new WelFragment();
+                welFragment.initialization();
+            }
+        }else
+        if(id == R.id.showWeather){
+            Toast.makeText(this, "Weather", Toast.LENGTH_SHORT).show();
         }
+
+
         return true;
     }
 }

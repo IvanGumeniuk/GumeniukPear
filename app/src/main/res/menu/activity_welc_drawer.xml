@@ -1,9 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+        <group
+            android:checkableBehavior="single">
+            <item
+                android:id="@+id/showContacts"
+                android:title="@string/contacts"
+                android:icon="@drawable/ic_contacts"/>
+
+            <item
+                android:id="@+id/showWeather"
+                android:title="@string/weather"
+                android:icon="@drawable/ic_weather"/>
+        </group>
+
+<item android:title="Communicate">
+    <menu>
         <item
             android:id="@+id/session_finish"
             android:icon="@drawable/ic_session_finish"
             android:title="@string/logout" />
+    </menu>
+</item>
+
+
+
 
 </menu>

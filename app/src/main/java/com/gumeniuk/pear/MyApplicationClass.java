@@ -1,7 +1,10 @@
 package com.gumeniuk.pear;
 
 import android.app.Application;
+import android.content.ContentResolver;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.provider.ContactsContract;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -24,7 +27,16 @@ public class MyApplicationClass extends Application {
     private MyAdapter adapter;
     private String userLogin;
     private Realm realm;
-    private RealmConfiguration config;
+    private boolean isContacts;
+
+    public void setIsContacts(boolean contacts) {
+        isContacts = contacts;
+    }
+
+    public boolean getIsContacts() {
+
+        return isContacts;
+    }
 
     public void setRealm(Realm realm) {
         this.realm = realm;
@@ -58,7 +70,7 @@ public class MyApplicationClass extends Application {
 //------------------------------------------------------------------------
 
         Realm.init(this);
-         config = new RealmConfiguration
+        RealmConfiguration config = new RealmConfiguration
                 .Builder()
                 .deleteRealmIfMigrationNeeded()
                 .build();
@@ -196,6 +208,7 @@ public class MyApplicationClass extends Application {
         realm.beginTransaction();
         RealmResults<RecyclerItem> result = realm.where(RecyclerItem.class).equalTo(getString(R.string.itemUserName), getUserLogin()).findAll();
         recyclerItems.addAll(result);
+        recyclerItems.addAll(readPhoneContacts());
         realm.commitTransaction();
         return recyclerItems;
     }
@@ -210,12 +223,13 @@ public class MyApplicationClass extends Application {
         });
     }
 
-    public void updateRealmData(final RecyclerItem item, final String newName){
+    public void updateRealmData(final RecyclerItem item, final String newName, final String newPhoneNumber){
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
                 RecyclerItem result = realm.where(RecyclerItem.class).equalTo(getString(R.string.id), item.getId()).findFirst();
                 result.setItemName(newName);
+                result.setItemPhoneNumber(newPhoneNumber);
             }
         });
     }
@@ -230,6 +244,67 @@ public class MyApplicationClass extends Application {
             }
         });
         return result[0];
+    }
+
+    private ArrayList<RecyclerItem> readPhoneContacts() {
+        ArrayList<RecyclerItem> items = new ArrayList<RecyclerItem>();
+        ContentResolver contentResolver = getContentResolver();
+        Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null,
+                null, null, null);
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                String id = cursor.getString(cursor
+                        .getColumnIndex(ContactsContract.Contacts._ID));
+                String name = cursor
+                        .getString(cursor
+                                .getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                if (Integer
+                        .parseInt(cursor.getString(cursor
+                                .getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
+                    Cursor phoneCursor = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                            null,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+                                    + " = ?", new String[]{id}, null);
+                    while (phoneCursor.moveToNext()) {
+                        int phoneType = phoneCursor
+                                .getInt(phoneCursor
+                                        .getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
+                        String phoneNumber = phoneCursor
+                                .getString(phoneCursor
+                                        .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        switch (phoneType) {
+                            case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
+                                items.add(new RecyclerItem(UUID.randomUUID().toString(),name,phoneNumber,getUserLogin()));
+                                break;
+                            case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
+                                items.add(new RecyclerItem(UUID.randomUUID().toString(),name,phoneNumber,getUserLogin()));
+                                break;
+                            case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
+                                items.add(new RecyclerItem(UUID.randomUUID().toString(),name,phoneNumber,getUserLogin()));
+                                break;
+                            case ContactsContract.CommonDataKinds.Phone.TYPE_OTHER:
+                                items.add(new RecyclerItem(UUID.randomUUID().toString(),name,phoneNumber,getUserLogin()));
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    phoneCursor.close();
+                }
+            }
+        }
+        return removeDuplicates(items);
+    }
+
+    private ArrayList<RecyclerItem> removeDuplicates(ArrayList<RecyclerItem> items){
+        for(int i=0; i< items.size();i++){
+            for (int j=i;j<items.size();j++){
+                if( items.get(i).getItemName().trim().equals(items.get(j).getItemName().trim()) &&
+                        items.get(i).getItemPhoneNumber().trim().equals(items.get(j).getItemPhoneNumber().trim()) )
+                    items.remove(j);
+            }
+        }
+        return items;
     }
 
     

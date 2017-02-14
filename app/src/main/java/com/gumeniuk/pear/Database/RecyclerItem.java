@@ -9,13 +9,24 @@ public class RecyclerItem extends RealmObject {
     private String id;
     private String itemName;
     private String itemUserName;
+    private String itemPhoneNumber;
 
     public RecyclerItem(){}
 
-    public RecyclerItem(String id, String itemName, String itemUserName) {
+    public RecyclerItem(String id, String itemName,String itemPhoneNumber , String itemUserName) {
         this.id = id;
         this.itemName = itemName;
+        this.itemPhoneNumber = itemPhoneNumber;
         this.itemUserName = itemUserName;
+    }
+
+    public void setItemPhoneNumber(String itemPhoneNumber) {
+        this.itemPhoneNumber = itemPhoneNumber;
+    }
+
+    public String getItemPhoneNumber() {
+
+        return itemPhoneNumber;
     }
 
     public String getItemUserName() {

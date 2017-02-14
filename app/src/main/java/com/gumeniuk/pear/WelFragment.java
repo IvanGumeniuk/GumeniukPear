@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,8 +13,8 @@ import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.gumeniuk.pear.Database.RecyclerItem;
@@ -26,11 +27,9 @@ import io.realm.Realm;
 
 public class WelFragment extends Fragment {
 
-    private RecyclerView recyclerView;
     private ArrayList<RecyclerItem> listItems;
     private MyApplicationClass app;
-    private FloatingActionButton floatButton;
-    private String dialogEditPressed = "";
+    private View view;
 
     @Nullable
     @Override
@@ -39,13 +38,19 @@ public class WelFragment extends Fragment {
         app = ((MyApplicationClass)getActivity().getApplicationContext());
         app.setRealm(Realm.getDefaultInstance());
 
-        View view = inflater.inflate(R.layout.fragment_wel, container, false);
+        view  = inflater.inflate(R.layout.fragment_wel, container, false);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        initialization();
+
+        return view;
+    }
+
+    public void initialization(){
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        floatButton = (FloatingActionButton)view.findViewById(R.id.float_btn);
+        FloatingActionButton floatButton = (FloatingActionButton) view.findViewById(R.id.float_btn);
         floatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,28 +61,12 @@ public class WelFragment extends Fragment {
 
         listItems = new ArrayList<>();
         listItems = app.getRealmData();
+        app.setIsContacts(true);
 
         //Set adapter
         app.setAdapter(new MyAdapter(listItems, getActivity(), app));
         recyclerView.setAdapter(app.getAdapter());
-
-        return view;
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Button btnQuit = (Button)getActivity().findViewById(R.id.btnQuit);
-        btnQuit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                app.logOut();
-                getActivity().finish();
-            }
-        });
-    }
-
-
 
 
     public void onPressFloatingButton(){
@@ -85,21 +74,33 @@ public class WelFragment extends Fragment {
         final   AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle(getString(R.string.NewItem));
 
-        final EditText input = new EditText(getContext());
+        LinearLayout layout = new LinearLayout(getContext());
+        layout.setOrientation(LinearLayout.VERTICAL);
 
-        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
-        builder.setView(input);
+        final EditText inputName = new EditText(getContext());
+        final EditText inputPhoneNumber = new EditText(getContext());
+
+        inputName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
+        inputName.setHint(R.string.name);
+        inputName.setHintTextColor(ContextCompat.getColor(getActivity(),R.color.grey));
+        inputPhoneNumber.setInputType(InputType.TYPE_CLASS_PHONE);
+        inputPhoneNumber.setHint(R.string.phone_number);
+        inputPhoneNumber.setHintTextColor(ContextCompat.getColor(getActivity(),R.color.grey));
+
+        layout.addView(inputName);
+        layout.addView(inputPhoneNumber);
+        builder.setView(layout);
 
         builder.setPositiveButton(getString(R.string.Ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                RecyclerItem item = new RecyclerItem(UUID.randomUUID().toString(), inputName.getText().toString().trim(), inputPhoneNumber.getText().toString().trim(), app.getUserLogin());
+                    listItems.add(item);
+                    app.getAdapter().notifyDataSetChanged();
+                    Toast.makeText(getContext(), getString(R.string.CreatedNewItem) + inputName.getText().toString().trim() +
+                            getString(R.string.with_number) + inputPhoneNumber.getText().toString().trim(), Toast.LENGTH_SHORT).show();
 
-                dialogEditPressed = input.getText().toString().trim();
-                listItems.add(new RecyclerItem(UUID.randomUUID().toString(),dialogEditPressed, app.getUserLogin()));
-                app.getAdapter().notifyDataSetChanged();
-                Toast.makeText(getContext(), getString(R.string.CreatedNewItem)+dialogEditPressed, Toast.LENGTH_SHORT).show();
-
-                app.setRealmData(app.getAdapter().getListItems());
+                    app.setRealmData(new ArrayList<RecyclerItem>());
             }
         });
         builder.setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
@@ -108,7 +109,9 @@ public class WelFragment extends Fragment {
                 dialog.dismiss();
             }
         });
-        builder.show();
+
+        final AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @Override

@@ -8,12 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.gumeniuk.pear.Database.RecyclerItem;
 import com.gumeniuk.pear.MyApplicationClass;
 import com.gumeniuk.pear.R;
-
-import java.util.ArrayList;
-import java.util.UUID;
 
 public class RegActivity extends AppCompatActivity {
 
@@ -44,6 +40,7 @@ public class RegActivity extends AppCompatActivity {
         backToLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(RegActivity.this,MainActivity.class));
                 finish();
             }
         });
@@ -58,19 +55,6 @@ public class RegActivity extends AppCompatActivity {
                     app.addNewPerson(login,password);
                     app.entering(login);
                     app.setUserLogin(login.getText().toString().trim());
-
-                    ArrayList<RecyclerItem> items = new ArrayList<RecyclerItem>();
-                    items.add(new RecyclerItem(UUID.randomUUID().toString(),"white pear",app.getUserLogin()));
-                    items.add(new RecyclerItem(UUID.randomUUID().toString(),"black pear",app.getUserLogin()));
-                    items.add(new RecyclerItem(UUID.randomUUID().toString(),"red pear",app.getUserLogin()));
-                    items.add(new RecyclerItem(UUID.randomUUID().toString(),"blue pear",app.getUserLogin()));
-                    items.add(new RecyclerItem(UUID.randomUUID().toString(),"green pear",app.getUserLogin()));
-                    items.add(new RecyclerItem(UUID.randomUUID().toString(),"yellow pear",app.getUserLogin()));
-                    items.add(new RecyclerItem(UUID.randomUUID().toString(),"pink pear",app.getUserLogin()));
-                    items.add(new RecyclerItem(UUID.randomUUID().toString(),"grey pear",app.getUserLogin()));
-                    items.add(new RecyclerItem(UUID.randomUUID().toString(),"purple pear",app.getUserLogin()));
-                    items.add(new RecyclerItem(UUID.randomUUID().toString(),"orange pear",app.getUserLogin()));
-                    app.setRealmData(items);
                     startActivity(new Intent(RegActivity.this, WelcActivity.class));
                     finish();
                 }

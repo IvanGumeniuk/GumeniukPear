@@ -15,7 +15,6 @@ public class User extends RealmObject{
     private String id;
     @Required
     private String name;
-
     private RealmList<RecyclerItem> items;
 
     public User(){}

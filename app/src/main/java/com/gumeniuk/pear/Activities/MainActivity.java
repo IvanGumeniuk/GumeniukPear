@@ -14,8 +14,6 @@ import com.gumeniuk.pear.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Toolbar toolbar;
-
     Button btnSingIn, btnSingUp, btnExit;
     EditText login, password;
     MyApplicationClass app;
@@ -31,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startWelcome();
         }
 
-        toolbar = (Toolbar)findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.Login);
 
@@ -63,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.btnSingUp:
                 startActivity(new Intent(this, RegActivity.class));
-
+                finish();
             case R.id.exit:
                 finish();
                 break;
@@ -81,11 +79,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         finish();
     }
 
-    @Override
-    protected void onResume() {
-        if(app.isLogged() && !app.getEnteringLogin().equals("")){
-            finish();
-        }
-        super.onResume();
-    }
 }
