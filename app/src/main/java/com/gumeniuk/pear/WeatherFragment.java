@@ -43,7 +43,7 @@ public class WeatherFragment extends Fragment {
             @Override
             public void onResponse(Call<Weather> call, Response<Weather> response) {
                 posts.addAll(response.body().getForecast().getForecastday());
-                
+
             }
             @Override
             public void onFailure(Call<Weather> call, Throwable t) {

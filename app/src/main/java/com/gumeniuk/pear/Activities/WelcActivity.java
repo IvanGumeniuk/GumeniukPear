@@ -59,6 +59,10 @@ public class WelcActivity extends AppCompatActivity
         head.setText(app.getUserLogin());
 
         fmanager = getSupportFragmentManager();
+        if(app.isLaunch()){
+            fmanager.beginTransaction().replace(R.id.fragment,welFragment).commit();
+            app.setLaunch(false);
+        }
     }
 
     @Override

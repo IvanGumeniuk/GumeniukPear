@@ -34,8 +34,15 @@ public class MyApplicationClass extends Application {
     private boolean isContacts;
     private static ICurrentWeather currentWeather;
     private static IForecastWeather forecastWeather;
+    private boolean launch;
 
-    private Retrofit retrofit;
+    public boolean isLaunch() {
+        return launch;
+    }
+
+    public void setLaunch(boolean launch) {
+        this.launch = launch;
+    }
 
     public void setIsContacts(boolean contacts) {
         isContacts = contacts;
@@ -94,7 +101,7 @@ public class MyApplicationClass extends Application {
 
 //----------------------------------------------------------------------------
 
-        retrofit = new Retrofit.Builder()
+        Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://api.apixu.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
