@@ -55,6 +55,7 @@ public class RegActivity extends AppCompatActivity {
                     app.addNewPerson(login,password);
                     app.entering(login);
                     app.setUserLogin(login.getText().toString().trim());
+                    app.setRealmData(app.readPhoneContacts());
                     startActivity(new Intent(RegActivity.this, WelcActivity.class));
                     finish();
                 }

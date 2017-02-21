@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.gumeniuk.pear.Database.RecyclerItem;
@@ -30,25 +31,28 @@ public class WelFragment extends Fragment {
     private ArrayList<RecyclerItem> listItems;
     private MyApplicationClass app;
     private View view;
+    ProgressBar progressBar;
+    RecyclerView recyclerView;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         app = ((MyApplicationClass)getActivity().getApplicationContext());
         app.setRealm(Realm.getDefaultInstance());
 
         view  = inflater.inflate(R.layout.fragment_wel, container, false);
 
-        initialization();
+        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
 
-        return view;
-    }
-
-    public void initialization(){
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
+        initialization();
+
 
         FloatingActionButton floatButton = (FloatingActionButton) view.findViewById(R.id.float_btn);
         floatButton.setOnClickListener(new View.OnClickListener() {
@@ -57,15 +61,17 @@ public class WelFragment extends Fragment {
                 onPressFloatingButton();
             }
         });
+        return view;
+    }
 
-
+    public int initialization(){
         listItems = new ArrayList<>();
         listItems = app.getRealmData();
         app.setIsContacts(true);
 
-        //Set adapter
         app.setAdapter(new MyAdapter(listItems, getActivity(), app));
         recyclerView.setAdapter(app.getAdapter());
+        return 1;
     }
 
 
@@ -95,12 +101,13 @@ public class WelFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 RecyclerItem item = new RecyclerItem(UUID.randomUUID().toString(), inputName.getText().toString().trim(), inputPhoneNumber.getText().toString().trim(), app.getUserLogin());
+                    app.setRealmData(item);
                     listItems.add(item);
                     app.getAdapter().notifyDataSetChanged();
                     Toast.makeText(getContext(), getString(R.string.CreatedNewItem) + inputName.getText().toString().trim() +
                             getString(R.string.with_number) + inputPhoneNumber.getText().toString().trim(), Toast.LENGTH_SHORT).show();
 
-                    app.setRealmData(new ArrayList<RecyclerItem>());
+
             }
         });
         builder.setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {

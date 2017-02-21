@@ -34,7 +34,6 @@ public class MyApplicationClass extends Application {
     }
 
     public boolean getIsContacts() {
-
         return isContacts;
     }
 
@@ -202,14 +201,29 @@ public class MyApplicationClass extends Application {
         });
     }
 
+
+    public void setRealmData(final RecyclerItem item){
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmList<RecyclerItem> realmList = new RealmList<RecyclerItem>();
+                realmList.add(item);
+                realm.copyToRealm(realmList);
+            }
+        });
+    }
+
+
     public ArrayList<RecyclerItem> getRealmData(){
         ArrayList<RecyclerItem> recyclerItems = new ArrayList<>();
 
         realm.beginTransaction();
         RealmResults<RecyclerItem> result = realm.where(RecyclerItem.class).equalTo(getString(R.string.itemUserName), getUserLogin()).findAll();
         recyclerItems.addAll(result);
-        recyclerItems.addAll(readPhoneContacts());
+        //recyclerItems.addAll(readPhoneContacts());
         realm.commitTransaction();
+
         return recyclerItems;
     }
 
@@ -246,7 +260,7 @@ public class MyApplicationClass extends Application {
         return result[0];
     }
 
-    private ArrayList<RecyclerItem> readPhoneContacts() {
+    public ArrayList<RecyclerItem> readPhoneContacts() {
         ArrayList<RecyclerItem> items = new ArrayList<RecyclerItem>();
         ContentResolver contentResolver = getContentResolver();
         Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null,

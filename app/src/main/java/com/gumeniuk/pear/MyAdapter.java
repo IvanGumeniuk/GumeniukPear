@@ -100,9 +100,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         inputName.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME);
         inputName.setHint(R.string.newName);
         inputName.setHintTextColor(ContextCompat.getColor(mContext,R.color.grey));
+        inputName.setText(listItems.get(position).getItemName());
         inputPhoneNumber.setInputType(InputType.TYPE_CLASS_PHONE);
         inputPhoneNumber.setHint(R.string.new_phone_number);
         inputPhoneNumber.setHintTextColor(ContextCompat.getColor(mContext,R.color.grey));
+        inputPhoneNumber.setText(listItems.get(position).getItemPhoneNumber());
 
         layout.addView(inputName);
         layout.addView(inputPhoneNumber);
