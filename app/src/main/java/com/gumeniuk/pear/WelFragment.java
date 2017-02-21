@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.gumeniuk.pear.Database.RecyclerItem;
@@ -31,7 +30,6 @@ public class WelFragment extends Fragment {
     private ArrayList<RecyclerItem> listItems;
     private MyApplicationClass app;
     private View view;
-    ProgressBar progressBar;
     RecyclerView recyclerView;
 
     @Nullable
@@ -43,12 +41,10 @@ public class WelFragment extends Fragment {
 
         view  = inflater.inflate(R.layout.fragment_wel, container, false);
 
-        progressBar = (ProgressBar) view.findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.INVISIBLE);
-
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
 
 
         initialization();

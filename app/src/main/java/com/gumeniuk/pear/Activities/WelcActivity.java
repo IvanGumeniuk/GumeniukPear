@@ -3,6 +3,7 @@ package com.gumeniuk.pear.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,10 +15,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.gumeniuk.pear.MyApplicationClass;
 import com.gumeniuk.pear.R;
+import com.gumeniuk.pear.WeatherFragment;
 import com.gumeniuk.pear.WelFragment;
 
 public class WelcActivity extends AppCompatActivity
@@ -25,12 +26,19 @@ public class WelcActivity extends AppCompatActivity
 
     private MyApplicationClass app;
 
+    private WelFragment welFragment;
+    private WeatherFragment weatherFragment;
+    private FragmentManager fmanager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welc);
 
         app = ((MyApplicationClass) getApplicationContext());
+
+        welFragment = new WelFragment();
+        weatherFragment = new WeatherFragment();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -49,6 +57,8 @@ public class WelcActivity extends AppCompatActivity
         View header = navigationView.getHeaderView(0);
         TextView head = (TextView) header.findViewById(R.id.headerText);
         head.setText(app.getUserLogin());
+
+        fmanager = getSupportFragmentManager();
     }
 
     @Override
@@ -110,12 +120,12 @@ public class WelcActivity extends AppCompatActivity
         {
             if(app.getIsContacts()) return true;
             else{
-                WelFragment welFragment = new WelFragment();
-                welFragment.initialization();
+                fmanager.beginTransaction().replace(R.id.fragment,welFragment).commit();
             }
         }else
         if(id == R.id.showWeather){
-            Toast.makeText(this, "Weather", Toast.LENGTH_SHORT).show();
+            fmanager.beginTransaction().replace(R.id.fragment,weatherFragment).commit();
+            app.setIsContacts(false);
         }
 
 

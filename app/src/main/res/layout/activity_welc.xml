@@ -10,17 +10,23 @@
     tools:context=".Activities.WelcActivity">
 
 
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <fragment
+
+<FrameLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fragment">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        class = "com.gumeniuk.pear.WelFragment"
-        android:id="@+id/fragment"
-        tools:layout="@layout/fragment_wel" />
-</RelativeLayout>
+        android:minHeight="?attr/actionBarSize"/>
+
+
+</FrameLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"

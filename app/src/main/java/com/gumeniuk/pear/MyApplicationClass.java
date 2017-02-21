@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.gumeniuk.pear.Database.RecyclerItem;
 import com.gumeniuk.pear.Database.User;
+import com.gumeniuk.pear.Weather.ICurrentWeather;
+import com.gumeniuk.pear.Weather.IForecastWeather;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -18,6 +20,8 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import io.realm.RealmList;
 import io.realm.RealmResults;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 
 public class MyApplicationClass extends Application {
@@ -28,6 +32,10 @@ public class MyApplicationClass extends Application {
     private String userLogin;
     private Realm realm;
     private boolean isContacts;
+    private static ICurrentWeather currentWeather;
+    private static IForecastWeather forecastWeather;
+
+    private Retrofit retrofit;
 
     public void setIsContacts(boolean contacts) {
         isContacts = contacts;
@@ -61,6 +69,14 @@ public class MyApplicationClass extends Application {
         this.adapter = adapter;
     }
 
+    public static IForecastWeather getForecastWeather() {
+        return forecastWeather;
+    }
+
+    public static ICurrentWeather getCurrentWeather() {
+        return currentWeather;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -77,6 +93,13 @@ public class MyApplicationClass extends Application {
         realm = Realm.getDefaultInstance();
 
 //----------------------------------------------------------------------------
+
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://api.apixu.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        currentWeather = retrofit.create(ICurrentWeather.class);
+        forecastWeather = retrofit.create(IForecastWeather.class);
     }
 
 
