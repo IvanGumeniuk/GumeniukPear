@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     Log.d("Firebase", "onAuthStateChanged:signed_in:" + user.getUid());
                     finish();
                 } else {
-
+                    // User is signed out
                     Log.d("Firebase", "onAuthStateChanged:signed_out");
                 }
                 // ...

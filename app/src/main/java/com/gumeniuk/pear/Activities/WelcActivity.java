@@ -130,6 +130,7 @@ public class WelcActivity extends AppCompatActivity
         if(id == R.id.showWeather){
             fmanager.beginTransaction().replace(R.id.fragment,weatherFragment).commit();
             app.setIsContacts(false);
+            //
         }
 
 
