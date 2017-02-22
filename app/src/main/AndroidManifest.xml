@@ -4,6 +4,7 @@
     package="com.gumeniuk.pear">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
 
     <application
         android:name=".MyApplicationClass"

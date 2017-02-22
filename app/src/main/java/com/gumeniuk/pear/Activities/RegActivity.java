@@ -59,19 +59,14 @@ public class RegActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 login.setText(login.getText().toString().trim());
-               /* if(app.checkingPerson(login,password,rep_password))
-                {
-                    app.addNewPerson(login,password);
+                if(app.checkingPerson(login,password,rep_password)) {
+                    app.addNewPerson(login, password);
                     app.entering(login);
                     app.setUserLogin(login.getText().toString().trim());
                     app.setRealmData(app.readPhoneContacts());
                     app.setLaunch(true);
                     startActivity(new Intent(RegActivity.this, WelcActivity.class));
                     finish();
-                }*/
-                if(app.checkingPerson(login,password,rep_password)){
-                    googleRegistration();
-
                 }
 
             }
