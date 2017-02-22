@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "340419243074",
+    "firebase_url": "https://gumeniukpear.firebaseio.com",
+    "project_id": "gumeniukpear",
+    "storage_bucket": "gumeniukpear.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340419243074:android:a9615b22c9512071",
+        "android_client_info": {
+          "package_name": "com.gumeniuk.pear"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340419243074-v99uq3k7p40c1b39u7bove5r5iqtltsk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gumeniuk.pear",
+            "certificate_hash": "8a7149bf73ca53f304b752bb879ae9a3403b5bd8"
+          }
+        },
+        {
+          "client_id": "340419243074-jqn9illcgo9scggf0v4lg2gkottbovp5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkkxx0KYF2b1yvurfFjVXtPuMPWPotBvs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340419243074-jqn9illcgo9scggf0v4lg2gkottbovp5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
