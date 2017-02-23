@@ -17,16 +17,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:text="Registration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/btnSingUp"
-                style="@android:style/Widget.Button"
-                android:layout_below="@+id/btnSingIn"
-                android:layout_centerHorizontal="true" />
+            android:layout_height="match_parent">
 
             <EditText
                 android:layout_width="wrap_content"
@@ -59,19 +50,42 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/btnSingIn"
                 style="@android:style/Widget.Button"
-                android:layout_marginTop="22dp"
+                android:layout_marginTop="24dp"
                 android:layout_below="@+id/textPassword"
-                android:layout_centerHorizontal="true" />
+                android:layout_alignLeft="@+id/textPassword"
+                android:layout_alignStart="@+id/textPassword" />
+
+            <Button
+                android:text="Registration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnSingUp"
+                style="@android:style/Widget.Button"
+                android:layout_below="@+id/btnSingIn"
+                android:layout_alignRight="@+id/btnSingIn"
+                android:layout_alignEnd="@+id/btnSingIn"
+                android:layout_marginTop="13dp" />
 
             <Button
                 android:text="Exit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/exit"
-                android:layout_below="@+id/btnSingUp"
-                android:layout_alignLeft="@+id/btnSingIn"
-                android:layout_alignStart="@+id/btnSingIn"
-                style="@android:style/Widget.Button" />
+                style="@android:style/Widget.Button"
+                android:layout_alignParentBottom="true"
+                android:layout_alignRight="@+id/textPassword"
+                android:layout_alignEnd="@+id/textPassword" />
+
+            <Button
+                android:text="Login with Google"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnGoogle"
+                style="@android:style/Widget.Button"
+                android:layout_alignBaseline="@+id/btnSingIn"
+                android:layout_alignBottom="@+id/btnSingIn"
+                android:layout_alignLeft="@+id/exit"
+                android:layout_alignStart="@+id/exit" />
         </RelativeLayout>
     </ScrollView>
 

@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.gumeniuk.pear.MyApplicationClass;
 import com.gumeniuk.pear.R;
 import com.gumeniuk.pear.WeatherFragment;
@@ -117,6 +118,7 @@ public class WelcActivity extends AppCompatActivity
 
         if (id == R.id.session_finish) {
             app.logOut();
+            FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this,MainActivity.class));
             finish();
         }else

@@ -47,33 +47,42 @@
             android:text="12345" />
 
         <Button
+            android:text="Exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/exit"
+            style="@android:style/Widget.Button"
+            android:layout_alignParentBottom="true"
+            android:layout_alignLeft="@+id/btnSingIn"
+            android:layout_alignStart="@+id/btnSingIn"
+            android:layout_marginBottom="36dp" />
+
+        <Button
             android:text="Registration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btnSingUp"
             style="@android:style/Widget.Button"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_above="@+id/exit"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp" />
 
         <Button
             android:text="Login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/btnSingIn"
-            android:layout_marginBottom="11dp"
             style="@android:style/Widget.Button"
-            android:layout_above="@+id/btnSingUp"
+            android:layout_marginTop="52dp"
+            android:layout_below="@+id/textPassword"
             android:layout_centerHorizontal="true" />
 
-        <Button
-            android:text="Exit"
+        <com.google.android.gms.common.SignInButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="14dp"
-            android:id="@+id/exit"
-            style="@android:style/Widget.Button"
-            android:layout_below="@+id/btnSingUp"
-            android:layout_alignLeft="@+id/btnSingIn"
-            android:layout_alignStart="@+id/btnSingIn" />
+            android:id="@+id/btnGoogle"
+            android:layout_below="@+id/btnSingIn"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="13dp" />
     </RelativeLayout>
 </LinearLayout>
