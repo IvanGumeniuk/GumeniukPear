@@ -110,9 +110,9 @@ public class MyApplicationClass extends Application {
     }
 
 
-    public void entering(EditText login){
+    public void entering(String login){
         edit.putBoolean(getString(R.string.logged),true);
-        edit.putString(getString(R.string.user),login.getText().toString().trim());
+        edit.putString(getString(R.string.user),login.trim());
         edit.apply();
     }
 
@@ -244,6 +244,30 @@ public class MyApplicationClass extends Application {
         });
     }
 
+    public void setRealmMarkerData(final MarkerInfo item){
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmList<MarkerInfo> realmList = new RealmList<MarkerInfo>();
+                realmList.add(item);
+                realm.copyToRealm(realmList);
+            }
+        });
+    }
+
+    public ArrayList<MarkerInfo> getRealmMarkerData(){
+        final ArrayList<MarkerInfo> markersInfo = new ArrayList<>();
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<MarkerInfo> result = realm.where(MarkerInfo.class).equalTo("markerUserName",getUserLogin()).findAll();
+                markersInfo.addAll(result);
+            }
+        });
+        return markersInfo;
+    }
+
 
     public ArrayList<RecyclerItem> getRealmData(){
         ArrayList<RecyclerItem> recyclerItems = new ArrayList<>();
@@ -251,7 +275,6 @@ public class MyApplicationClass extends Application {
         realm.beginTransaction();
         RealmResults<RecyclerItem> result = realm.where(RecyclerItem.class).equalTo(getString(R.string.itemUserName), getUserLogin()).findAll();
         recyclerItems.addAll(result);
-        //recyclerItems.addAll(readPhoneContacts());
         realm.commitTransaction();
 
         return recyclerItems;
@@ -350,6 +373,8 @@ public class MyApplicationClass extends Application {
         }
         return items;
     }
+
+
 
     
     

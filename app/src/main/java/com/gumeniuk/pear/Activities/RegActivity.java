@@ -55,7 +55,7 @@ public class RegActivity extends AppCompatActivity {
                 login.setText(login.getText().toString().trim());
                 if(app.checkingPerson(login,password,rep_password)) {
                     app.addNewPerson(login, password);
-                    app.entering(login);
+                    app.entering(login.getText().toString());
                     app.setUserLogin(login.getText().toString().trim());
                     app.setRealmData(app.readPhoneContacts());
                     app.setLaunch(true);

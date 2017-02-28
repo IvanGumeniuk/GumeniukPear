@@ -1,5 +1,7 @@
 package com.gumeniuk.pear.Database;
 
+import com.gumeniuk.pear.MarkerInfo;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
@@ -16,6 +18,7 @@ public class User extends RealmObject{
     @Required
     private String name;
     private RealmList<RecyclerItem> items;
+    private RealmList<MarkerInfo> markers;
 
     public User(){}
 
@@ -41,5 +44,13 @@ public class User extends RealmObject{
 
     public RealmList<RecyclerItem> getItems() {
         return items;
+    }
+
+    public void setMarkers(RealmList<MarkerInfo> markers) {
+        this.markers = markers;
+    }
+
+    public RealmList<MarkerInfo> getMarkers() {
+        return markers;
     }
 }

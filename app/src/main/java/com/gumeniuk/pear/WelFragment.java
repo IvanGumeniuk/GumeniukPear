@@ -45,10 +45,7 @@ public class WelFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-
-
         initialization();
-
 
         FloatingActionButton floatButton = (FloatingActionButton) view.findViewById(R.id.float_btn);
         floatButton.setOnClickListener(new View.OnClickListener() {

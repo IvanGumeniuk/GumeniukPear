@@ -17,6 +17,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.gumeniuk.pear.MapsFragment;
 import com.gumeniuk.pear.MyApplicationClass;
 import com.gumeniuk.pear.R;
 import com.gumeniuk.pear.WeatherFragment;
@@ -29,6 +30,7 @@ public class WelcActivity extends AppCompatActivity
 
     private WelFragment welFragment;
     private WeatherFragment weatherFragment;
+    private MapsFragment mapsFragment;
     private FragmentManager fmanager;
 
     @Override
@@ -40,6 +42,7 @@ public class WelcActivity extends AppCompatActivity
 
         welFragment = new WelFragment();
         weatherFragment = new WeatherFragment();
+        mapsFragment = new MapsFragment();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -117,8 +120,8 @@ public class WelcActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.session_finish) {
-            app.logOut();
             FirebaseAuth.getInstance().signOut();
+            app.logOut();
             startActivity(new Intent(this,MainActivity.class));
             finish();
         }else
@@ -132,7 +135,10 @@ public class WelcActivity extends AppCompatActivity
         if(id == R.id.showWeather){
             fmanager.beginTransaction().replace(R.id.fragment,weatherFragment).commit();
             app.setIsContacts(false);
-            //
+        }else
+        if(id == R.id.showGoogleMaps){
+            fmanager.beginTransaction().replace(R.id.fragment,mapsFragment).commit();
+            app.setIsContacts(false);
         }
 
 

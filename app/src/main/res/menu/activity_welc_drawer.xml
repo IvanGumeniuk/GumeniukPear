@@ -12,6 +12,11 @@
                 android:id="@+id/showWeather"
                 android:title="@string/weather"
                 android:icon="@drawable/ic_weather"/>
+
+            <item
+                android:id="@+id/showGoogleMaps"
+                android:title="@string/Map"
+                android:icon="@drawable/ic_maps"/>
         </group>
 
 <item android:title="Communicate">
