@@ -25,6 +25,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.gumeniuk.pear.Database.MarkerInfo;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -87,10 +88,10 @@ public class MapsFragment extends Fragment {
             googleMap.setMyLocationEnabled(true);
         } else {
             Toast.makeText(getActivity(), "You have to accept to enjoy all app's services!", Toast.LENGTH_LONG).show();
-            if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                googleMap.setMyLocationEnabled(true);
-            }
+//            if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
+//                    == PackageManager.PERMISSION_GRANTED) {
+//                googleMap.setMyLocationEnabled(true);
+//            }
         }
 /*
                 // For dropping a marker at a point on the Map

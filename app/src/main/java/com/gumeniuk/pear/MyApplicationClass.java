@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.gumeniuk.pear.Database.MarkerInfo;
 import com.gumeniuk.pear.Database.RecyclerItem;
 import com.gumeniuk.pear.Database.User;
 import com.gumeniuk.pear.Weather.ICurrentWeather;

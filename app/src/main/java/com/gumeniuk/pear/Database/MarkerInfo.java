@@ -1,4 +1,4 @@
-package com.gumeniuk.pear;
+package com.gumeniuk.pear.Database;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
