@@ -43,6 +43,7 @@ public class WelcActivity extends AppCompatActivity
         welFragment = new WelFragment();
         weatherFragment = new WeatherFragment();
         mapsFragment = new MapsFragment();
+        mapsFragment.setRetainInstance(true);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

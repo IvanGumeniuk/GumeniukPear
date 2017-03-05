@@ -57,6 +57,7 @@ public class MapsFragment extends Fragment {
             e.printStackTrace();
         }
 
+
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap mMap) {
@@ -73,7 +74,7 @@ public class MapsFragment extends Fragment {
                 googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(Marker marker) {
-                        CameraPosition cameraPosition = new CameraPosition.Builder().target(marker.getPosition()).zoom(13).build();
+                        CameraPosition cameraPosition = new CameraPosition.Builder().target(marker.getPosition()).zoom(12).build();
                         googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
                         return false;
@@ -197,7 +198,6 @@ public class MapsFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
-        app.getRealm().close();
     }
 
     @Override

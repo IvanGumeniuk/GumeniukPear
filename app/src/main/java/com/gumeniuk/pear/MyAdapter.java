@@ -1,8 +1,10 @@
 package com.gumeniuk.pear;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -92,17 +94,20 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         return listItems.size();
     }
 
-    public void dialogClickCall(final int position){
-        String contact_number=listItems.get(position).getItemPhoneNumber();
-        Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:" + contact_number));
-        try {
-            callIntent.setPackage("com.android.phone");
-            mContext.startActivity(callIntent);
-        } catch(Exception e) {
-            callIntent.setPackage("com.android.server.telecom");
-            mContext.startActivity(callIntent);
-        }
+    public void dialogClickCall(final int position) {
+        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE)
+                == PackageManager.PERMISSION_GRANTED) {
+            String contact_number = listItems.get(position).getItemPhoneNumber();
+            Intent callIntent = new Intent(Intent.ACTION_CALL);
+            callIntent.setData(Uri.parse("tel:" + contact_number));
+            try {
+                callIntent.setPackage("com.android.phone");
+                mContext.startActivity(callIntent);
+            } catch (Exception e) {
+                callIntent.setPackage("com.android.server.telecom");
+                mContext.startActivity(callIntent);
+            }
+        } else Toast.makeText(mContext, "You don`t give permission. Call is imposible", Toast.LENGTH_SHORT).show();
     }
 
     public void dialogClickEdit(final int position) {
