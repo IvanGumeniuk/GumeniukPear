@@ -38,6 +38,15 @@ public class MyApplicationClass extends Application {
     private static ICurrentWeather currentWeather;
     private static IForecastWeather forecastWeather;
     private boolean launch;
+    private String entryWay;
+
+    public String getEntryWay() {
+        return entryWay;
+    }
+
+    public void setEntryWay(String entryWay) {
+        this.entryWay = entryWay;
+    }
 
     public boolean isLaunch() {
         return launch;
@@ -92,6 +101,7 @@ public class MyApplicationClass extends Application {
         super.onCreate();
         person = getSharedPreferences(getString(R.string.SPFileName),MODE_PRIVATE);
         edit = person.edit();
+        setEntryWay("");
 //------------------------------------------------------------------------
 
         Realm.init(this);
@@ -265,7 +275,8 @@ public class MyApplicationClass extends Application {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-                RealmResults<MarkerInfo> result = realm.where(MarkerInfo.class).equalTo("markerUserName",getUserLogin()).findAll();
+                RealmResults<MarkerInfo> result = realm.where(MarkerInfo.class).equalTo("markerUserName",getUserLogin()).findAll()
+                        .where().equalTo("enteringWay", getEntryWay()).findAll();
                 markersInfo.addAll(result);
             }
         });
@@ -277,11 +288,12 @@ public class MyApplicationClass extends Application {
         ArrayList<RecyclerItem> recyclerItems = new ArrayList<>();
 
         realm.beginTransaction();
-        RealmResults<RecyclerItem> result = realm.where(RecyclerItem.class).equalTo(getString(R.string.itemUserName), getUserLogin()).findAll();
+        RealmResults<RecyclerItem> result = realm.where(RecyclerItem.class).equalTo(getString(R.string.itemUserName), getUserLogin()).findAll()
+                .where().equalTo("enteringWay",getEntryWay()).findAll();
         recyclerItems.addAll(result);
         realm.commitTransaction();
 
-        return recyclerItems;
+        return removeDuplicates(recyclerItems);
     }
 
     public void removeFromRealmData(final String id){
@@ -347,16 +359,16 @@ public class MyApplicationClass extends Application {
                                             .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                             switch (phoneType) {
                                 case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
-                                    items.add(new RecyclerItem(UUID.randomUUID().toString(), name, phoneNumber, getUserLogin()));
+                                    items.add(new RecyclerItem(UUID.randomUUID().toString(), name, phoneNumber, getUserLogin(), getEntryWay()));
                                     break;
                                 case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
-                                    items.add(new RecyclerItem(UUID.randomUUID().toString(), name, phoneNumber, getUserLogin()));
+                                    items.add(new RecyclerItem(UUID.randomUUID().toString(), name, phoneNumber, getUserLogin(), getEntryWay()));
                                     break;
                                 case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
-                                    items.add(new RecyclerItem(UUID.randomUUID().toString(), name, phoneNumber, getUserLogin()));
+                                    items.add(new RecyclerItem(UUID.randomUUID().toString(), name, phoneNumber, getUserLogin(), getEntryWay()));
                                     break;
                                 case ContactsContract.CommonDataKinds.Phone.TYPE_OTHER:
-                                    items.add(new RecyclerItem(UUID.randomUUID().toString(), name, phoneNumber, getUserLogin()));
+                                    items.add(new RecyclerItem(UUID.randomUUID().toString(), name, phoneNumber, getUserLogin(), getEntryWay()));
                                     break;
                                 default:
                                     break;

@@ -15,6 +15,7 @@ public class MarkerInfo extends RealmObject {
     String title;
     String description;
     String markerUserName;
+    String enteringWay;
 
     public MarkerInfo() {
     }
@@ -48,6 +49,10 @@ public class MarkerInfo extends RealmObject {
         this.markerUserName = markerUserName;
     }
 
+    public void setEnteringWay(String enteringWay) {
+        this.enteringWay = enteringWay;
+    }
+
     public String getId() {
         return id;
     }
@@ -70,5 +75,9 @@ public class MarkerInfo extends RealmObject {
 
     public String getMarkerUserName() {
         return markerUserName;
+    }
+
+    public String getEnteringWay() {
+        return enteringWay;
     }
 }

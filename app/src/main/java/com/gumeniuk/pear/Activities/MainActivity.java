@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private CallbackManager mCallbackManager;
     private FirebaseAuth facebookAuth;
     private FirebaseAuth.AuthStateListener facebookAuthListener;
-    private String entryWay;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,8 +82,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.Login);
 
-        entryWay = "";
-
         btnSingIn = (Button) findViewById(R.id.btnSingIn);
         btnSingIn.setOnClickListener(this);
 
@@ -105,7 +103,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null && entryWay.equals("google")) {
+                if (user != null && app.getEntryWay().equals("google")) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     Intent intent = new Intent(MainActivity.this, WelcActivity.class);
@@ -127,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null && entryWay.equals("facebook")) {
+                if (user != null && app.getEntryWay().equals("facebook")) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
                     Intent intent = new Intent(MainActivity.this, WelcActivity.class);
@@ -168,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         FirebaseUser user = facebookAuth.getCurrentUser();
                         if(user != null) {
                             app.setUserLogin(user.getDisplayName());
+                            app.setEntryWay("facebook");
                             app.setRealmData(app.readPhoneContacts());
                         }
                         if (!task.isSuccessful()) {
@@ -208,18 +207,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btnSingIn:
                 if (app.isPerson(login) && app.checkPassword(login,password)) {
+                    app.setEntryWay("default");
                     app.entering(login.getText().toString());
                     app.setUserLogin(login.getText().toString().trim());
                     startWelcome();
                 } else Toast.makeText(this, R.string.WrongLogPass, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btnGoogle:
-                entryWay = "google";
+                app.setEntryWay("google");
                 showProgressDialog();
                 signIn();
                 break;
             case R.id.btnFacebook:
-                entryWay = "facebook";
+                app.setEntryWay("facebook");
                 btnFacebook.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(LoginResult loginResult) {
@@ -264,7 +264,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-    if(entryWay.equals("google")) {
+    if(app.getEntryWay().equals("google")) {
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
@@ -273,12 +273,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 firebaseAuthWithGoogle(account);
             } else {
                 Toast.makeText(this, "Network connection problems", Toast.LENGTH_SHORT).show();
+                hideProgressDialog();
                 // Google Sign In failed, update UI appropriately
                 // ...
             }
 
         }
-    }else if(entryWay.equals("facebook")) {
+    }else if(app.getEntryWay().equals("facebook")) {
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
     }
@@ -295,6 +296,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
 
                         app.setUserLogin(acct.getDisplayName());
+                        app.setEntryWay("google");
                         app.setRealmData(app.readPhoneContacts());
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
@@ -314,6 +316,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
         Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
+        hideProgressDialog();
     }
 
 

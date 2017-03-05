@@ -10,14 +10,16 @@ public class RecyclerItem extends RealmObject {
     private String itemName;
     private String itemUserName;
     private String itemPhoneNumber;
+    private String enteringWay;
 
     public RecyclerItem(){}
 
-    public RecyclerItem(String id, String itemName,String itemPhoneNumber , String itemUserName) {
+    public RecyclerItem(String id, String itemName,String itemPhoneNumber , String itemUserName, String enteringWay) {
         this.id = id;
         this.itemName = itemName;
         this.itemPhoneNumber = itemPhoneNumber;
         this.itemUserName = itemUserName;
+        this.enteringWay = enteringWay;
     }
 
     public void setItemPhoneNumber(String itemPhoneNumber) {
@@ -52,5 +54,13 @@ public class RecyclerItem extends RealmObject {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getEnteringWay() {
+        return enteringWay;
+    }
+
+    public void setEnteringWay(String enteringWay) {
+        this.enteringWay = enteringWay;
     }
 }

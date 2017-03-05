@@ -149,6 +149,7 @@ public class MapsFragment extends Fragment {
                 markerInfo.setLat(latLng.latitude);
                 markerInfo.setLng(latLng.longitude);
                 markerInfo.setMarkerUserName(app.getUserLogin());
+                markerInfo.setEnteringWay(app.getEntryWay());
                 app.setRealmMarkerData(markerInfo);
                 markersInfo.add(markerInfo);
                 googleMap.addMarker(new MarkerOptions().position(latLng).title(inputTitle.getText().toString().trim()).snippet(inputDescription.getText().toString().trim()));

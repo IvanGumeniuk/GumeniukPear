@@ -93,7 +93,7 @@ public class WelFragment extends Fragment {
         builder.setPositiveButton(getString(R.string.Ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                RecyclerItem item = new RecyclerItem(UUID.randomUUID().toString(), inputName.getText().toString().trim(), inputPhoneNumber.getText().toString().trim(), app.getUserLogin());
+                RecyclerItem item = new RecyclerItem(UUID.randomUUID().toString(), inputName.getText().toString().trim(), inputPhoneNumber.getText().toString().trim(), app.getUserLogin(), app.getEntryWay());
                     app.setRealmData(item);
                     listItems.add(item);
                     app.getAdapter().notifyDataSetChanged();

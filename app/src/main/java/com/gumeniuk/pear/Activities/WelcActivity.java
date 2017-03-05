@@ -16,6 +16,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.gumeniuk.pear.MapsFragment;
 import com.gumeniuk.pear.MyApplicationClass;
@@ -121,7 +122,9 @@ public class WelcActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.session_finish) {
-            FirebaseAuth.getInstance().signOut();
+            if(app.getEntryWay().equals("google")) FirebaseAuth.getInstance().signOut();
+            if(app.getEntryWay().equals("facebook")) LoginManager.getInstance().logOut();
+            app.setEntryWay("");
             app.logOut();
             startActivity(new Intent(this,MainActivity.class));
             finish();
