@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -41,7 +40,6 @@ public class MyApplicationClass extends Application {
     private Realm realm;
     private boolean isContacts;
     private boolean launch;
-    private String entryWay;
     private double latitude;
     private double longitude;
 
@@ -70,14 +68,11 @@ public class MyApplicationClass extends Application {
     }
 
     public String getEntryWay() {
-        //return person.getString(entryWay,"");
-        Log.d("way",person.getString("entryWay",""));
         return person.getString("entryWay","");
     }
 
     public void setEntryWay(String entryWay) {
             edit.putString("entryWay",entryWay).apply();
-            this.entryWay = entryWay;
     }
 
     public boolean isLaunch() {
