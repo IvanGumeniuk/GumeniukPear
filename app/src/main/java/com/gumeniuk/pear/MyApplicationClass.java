@@ -8,9 +8,11 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.gumeniuk.pear.Database.MarkerInfo;
 import com.gumeniuk.pear.Database.RecyclerItem;
 import com.gumeniuk.pear.Database.User;
@@ -30,23 +32,52 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MyApplicationClass extends Application {
 
+    private static ICurrentWeather currentWeather;
+    private static IForecastWeather forecastWeather;
     SharedPreferences person;
     SharedPreferences.Editor edit;
     private MyAdapter adapter;
     private String userLogin;
     private Realm realm;
     private boolean isContacts;
-    private static ICurrentWeather currentWeather;
-    private static IForecastWeather forecastWeather;
     private boolean launch;
     private String entryWay;
+    private double latitude;
+    private double longitude;
+
+    public static IForecastWeather getForecastWeather() {
+        return forecastWeather;
+    }
+
+    public static ICurrentWeather getCurrentWeather() {
+        return currentWeather;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
 
     public String getEntryWay() {
-        return entryWay;
+        //return person.getString(entryWay,"");
+        Log.d("way",person.getString("entryWay",""));
+        return person.getString("entryWay","");
     }
 
     public void setEntryWay(String entryWay) {
-        this.entryWay = entryWay;
+            edit.putString("entryWay",entryWay).apply();
+            this.entryWay = entryWay;
     }
 
     public boolean isLaunch() {
@@ -57,28 +88,28 @@ public class MyApplicationClass extends Application {
         this.launch = launch;
     }
 
-    public void setIsContacts(boolean contacts) {
-        isContacts = contacts;
-    }
-
     public boolean getIsContacts() {
         return isContacts;
     }
 
-    public void setRealm(Realm realm) {
-        this.realm = realm;
+    public void setIsContacts(boolean contacts) {
+        isContacts = contacts;
     }
 
     public Realm getRealm() {
         return realm;
     }
 
-    public void setUserLogin(String userLogin) {
-        this.userLogin = userLogin;
+    public void setRealm(Realm realm) {
+        this.realm = realm;
     }
 
     public String getUserLogin() {
         return userLogin;
+    }
+
+    public void setUserLogin(String userLogin) {
+        this.userLogin = userLogin;
     }
 
     public MyAdapter getAdapter() {
@@ -89,20 +120,13 @@ public class MyApplicationClass extends Application {
         this.adapter = adapter;
     }
 
-    public static IForecastWeather getForecastWeather() {
-        return forecastWeather;
-    }
-
-    public static ICurrentWeather getCurrentWeather() {
-        return currentWeather;
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
-        person = getSharedPreferences(getString(R.string.SPFileName),MODE_PRIVATE);
+        person = getSharedPreferences(getString(R.string.SPFileName), MODE_PRIVATE);
         edit = person.edit();
-        setEntryWay("");
+//        setEntryWay("");
+        Fresco.initialize(this);
 //------------------------------------------------------------------------
 
         Realm.init(this);
@@ -124,84 +148,85 @@ public class MyApplicationClass extends Application {
     }
 
 
-    public void entering(String login){
-        edit.putBoolean(getString(R.string.logged),true);
-        edit.putString(getString(R.string.user),login.trim());
+    public void entering(String login) {
+        edit.putBoolean(getString(R.string.logged), true);
+        edit.putString(getString(R.string.user), login.trim());
 
         edit.apply();
     }
 
-    public String getEnteringLogin(){
-        return person.getString(getString(R.string.user),"");
+    public String getEnteringLogin() {
+        return person.getString(getString(R.string.user), "");
     }
 
-    public boolean isLogged(){
-        if(person.getBoolean(getString(R.string.logged), true)) return true;
+    public boolean isLogged() {
+        if (person.getBoolean(getString(R.string.logged), true)) return true;
         return false;
     }
 
-    public void logOut(){
-        edit.putBoolean(getString(R.string.logged),false);
-        edit.putString(getString(R.string.user),"");
+    public void logOut() {
+        edit.putBoolean(getString(R.string.logged), false);
+        edit.putString(getString(R.string.user), "");
+        edit.putString("entryWay","");
         edit.apply();
     }
 
-    public void addNewPerson(EditText login, EditText password){
-        edit.putString(login.getText().toString() , encryption(login.getText().toString(),password.getText().toString(),true));
+    public void addNewPerson(EditText login, EditText password) {
+        edit.putString(login.getText().toString(), encryption(login.getText().toString(), password.getText().toString(), true));
         edit.apply();
 
         realm.beginTransaction();
-        User user =  realm.createObject(User.class, UUID.randomUUID().toString());
+        User user = realm.createObject(User.class, UUID.randomUUID().toString());
         user.setName(login.getText().toString().trim());
         realm.commitTransaction();
 
-        Toast.makeText(this, getString(R.string.newPerson)+login.getText().toString()+getString(R.string.wasRegistered), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, getString(R.string.newPerson) + login.getText().toString() + getString(R.string.wasRegistered), Toast.LENGTH_SHORT).show();
     }
 
     public boolean isPerson(EditText login) {
         return person.contains(login.getText().toString());
     }
 
-    public boolean checkPassword(EditText login, EditText password){
-        return person.getString(login.getText().toString(),"").equals(encryption(login.getText().toString(),password.getText().toString(),true));
+    public boolean checkPassword(EditText login, EditText password) {
+        return person.getString(login.getText().toString(), "").equals(encryption(login.getText().toString(), password.getText().toString(), true));
     }
 
-    public boolean checkingPerson(EditText login, EditText password, EditText rep_password){
+    public boolean checkingPerson(EditText login, EditText password, EditText rep_password) {
 
         login.setText(login.getText().toString().trim());
 
         String log = login.getText().toString();
         String pass = password.getText().toString();
 
-        for (int i=0;i<log.length();i++) {
-            if(log.codePointAt(i)>255){
+        for (int i = 0; i < log.length(); i++) {
+            if (log.codePointAt(i) > 255) {
                 Toast.makeText(this, R.string.LoginContainInvalidSymbols, Toast.LENGTH_LONG).show();
                 return false;
             }
         }
 
-        for (int i=0;i<pass.length();i++) {
-            if(pass.codePointAt(i)>255){
+        for (int i = 0; i < pass.length(); i++) {
+            if (pass.codePointAt(i) > 255) {
                 Toast.makeText(this, R.string.PasswordContainInvalidSymbols, Toast.LENGTH_LONG).show();
                 return false;
             }
         }
 
-        if(person.contains(login.getText().toString())){
+        if (person.contains(login.getText().toString())) {
             Toast.makeText(this, R.string.alreadyExist, Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        if(login.getText().length()<3){
+        if (login.getText().length() < 3) {
             Toast.makeText(this, R.string.shortLogin, Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        if(password.getText().length()<5){
+        if (password.getText().length() < 5) {
             Toast.makeText(this, R.string.shortPassword, Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(!password.getText().toString().equals(rep_password.getText().toString())){
+        if (!password.getText().toString().equals(rep_password.getText().toString())) {
             Toast.makeText(this, R.string.PassDontMatch, Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -209,32 +234,32 @@ public class MyApplicationClass extends Application {
         return true;
     }
 
-    public String encryption(String log, String pass, boolean encrypt){
+    public String encryption(String log, String pass, boolean encrypt) {
 
-        char [] password = new char[pass.length()];
+        char[] password = new char[pass.length()];
         String newPassword = "";
         int displacement = 0;
 
-        for (int i=0;i<log.length();i++)
-            displacement+=log.codePointAt(i);
+        for (int i = 0; i < log.length(); i++)
+            displacement += log.codePointAt(i);
 
-        displacement%=255;
+        displacement %= 255;
 
-        if(encrypt)
-            for (int i=0; i<pass.length();i++)
-                password[i] = (char) ((pass.codePointAt(i) + displacement)%255);
+        if (encrypt)
+            for (int i = 0; i < pass.length(); i++)
+                password[i] = (char) ((pass.codePointAt(i) + displacement) % 255);
         else
-            for (int i=0; i<pass.length();i++)
-                password[i]= (char)((pass.codePointAt(i)-displacement+255)%255);
+            for (int i = 0; i < pass.length(); i++)
+                password[i] = (char) ((pass.codePointAt(i) - displacement + 255) % 255);
 
-        for (int i=0; i<password.length;i++)
-            newPassword+=password[i];
+        for (int i = 0; i < password.length; i++)
+            newPassword += password[i];
 
         return newPassword;
     }
 
 
-    public void setRealmData(final ArrayList <RecyclerItem> items){
+    public void setRealmData(final ArrayList<RecyclerItem> items) {
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -246,8 +271,68 @@ public class MyApplicationClass extends Application {
         });
     }
 
+    public void setRealmMarkerData(final MarkerInfo item, final boolean update) {
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                if (!update) {
+                    RealmList<MarkerInfo> realmList = new RealmList<MarkerInfo>();
+                    realmList.add(item);
+                    realm.copyToRealm(realmList);
+                } else {
+                    RealmResults<MarkerInfo> result = realm.where(MarkerInfo.class).equalTo("markerUserName", getUserLogin()).findAll()
+                            .where().equalTo("enteringWay", getEntryWay()).findAll()
+                            .where().equalTo("lat", item.getLat()).findAll()
+                            .where().equalTo("lng", item.getLng()).findAll();
 
-    public void setRealmData(final RecyclerItem item){
+                    result.get(0).setTitle(item.getTitle());
+                    result.get(0).setDescription(item.getDescription());
+                }
+            }
+        });
+    }
+
+    public void removeMarkerFromRealm(final MarkerInfo item){
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<MarkerInfo> result = realm.where(MarkerInfo.class).equalTo("markerUserName", getUserLogin()).findAll()
+                        .where().equalTo("enteringWay", getEntryWay()).findAll()
+                        .where().equalTo("lat", item.getLat()).findAll()
+                        .where().equalTo("lng", item.getLng()).findAll();
+
+                result.deleteFirstFromRealm();
+            }
+        });
+    }
+
+    public ArrayList<MarkerInfo> getRealmMarkerData() {
+        final ArrayList<MarkerInfo> markersInfo = new ArrayList<>();
+
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                RealmResults<MarkerInfo> result = realm.where(MarkerInfo.class).equalTo("markerUserName", getUserLogin()).findAll()
+                        .where().equalTo("enteringWay", getEntryWay()).findAll();
+                markersInfo.addAll(result);
+            }
+        });
+        return markersInfo;
+    }
+
+    public ArrayList<RecyclerItem> getRealmData() {
+        ArrayList<RecyclerItem> recyclerItems = new ArrayList<>();
+
+        realm.beginTransaction();
+        RealmResults<RecyclerItem> result = realm.where(RecyclerItem.class).equalTo(getString(R.string.itemUserName), getUserLogin()).findAll()
+                .where().equalTo("enteringWay", getEntryWay()).findAll();
+        recyclerItems.addAll(result);
+        realm.commitTransaction();
+
+        return removeDuplicates(recyclerItems);
+    }
+
+    public void setRealmData(final RecyclerItem item) {
 
         realm.executeTransaction(new Realm.Transaction() {
             @Override
@@ -259,45 +344,7 @@ public class MyApplicationClass extends Application {
         });
     }
 
-    public void setRealmMarkerData(final MarkerInfo item){
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                RealmList<MarkerInfo> realmList = new RealmList<MarkerInfo>();
-                realmList.add(item);
-                realm.copyToRealm(realmList);
-            }
-        });
-    }
-
-    public ArrayList<MarkerInfo> getRealmMarkerData(){
-        final ArrayList<MarkerInfo> markersInfo = new ArrayList<>();
-
-        realm.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                RealmResults<MarkerInfo> result = realm.where(MarkerInfo.class).equalTo("markerUserName",getUserLogin()).findAll()
-                        .where().equalTo("enteringWay", getEntryWay()).findAll();
-                markersInfo.addAll(result);
-            }
-        });
-        return markersInfo;
-    }
-
-
-    public ArrayList<RecyclerItem> getRealmData(){
-        ArrayList<RecyclerItem> recyclerItems = new ArrayList<>();
-
-        realm.beginTransaction();
-        RealmResults<RecyclerItem> result = realm.where(RecyclerItem.class).equalTo(getString(R.string.itemUserName), getUserLogin()).findAll()
-                .where().equalTo("enteringWay",getEntryWay()).findAll();
-        recyclerItems.addAll(result);
-        realm.commitTransaction();
-
-        return removeDuplicates(recyclerItems);
-    }
-
-    public void removeFromRealmData(final String id){
+    public void removeFromRealmData(final String id) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -307,7 +354,7 @@ public class MyApplicationClass extends Application {
         });
     }
 
-    public void updateRealmData(final RecyclerItem item, final String newName, final String newPhoneNumber){
+    public void updateRealmData(final RecyclerItem item, final String newName, final String newPhoneNumber) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
@@ -318,12 +365,12 @@ public class MyApplicationClass extends Application {
         });
     }
 
-    public RecyclerItem getRecyclerItemFromRealmData(final String id){
+    public RecyclerItem getRecyclerItemFromRealmData(final String id) {
         final RecyclerItem[] result = {null};
         realm.executeTransaction(new Realm.Transaction() {
             @Override
             public void execute(Realm realm) {
-               result[0] = realm.where(RecyclerItem.class).equalTo(getString(R.string.id), id ).findFirst();
+                result[0] = realm.where(RecyclerItem.class).equalTo(getString(R.string.id), id).findFirst();
 
             }
         });
@@ -386,16 +433,17 @@ public class MyApplicationClass extends Application {
         }
     }
 
-    private ArrayList<RecyclerItem> removeDuplicates(ArrayList<RecyclerItem> items){
-        for(int i=0; i< items.size();i++){
-            for (int j=i;j<items.size();j++){
-                if( items.get(i).getItemName().trim().equals(items.get(j).getItemName().trim()) &&
-                        items.get(i).getItemPhoneNumber().trim().equals(items.get(j).getItemPhoneNumber().trim()) )
+    private ArrayList<RecyclerItem> removeDuplicates(ArrayList<RecyclerItem> items) {
+        for (int i = 0; i < items.size(); i++) {
+            for (int j = i; j < items.size(); j++) {
+                if (items.get(i).getItemName().trim().equals(items.get(j).getItemName().trim()) &&
+                        items.get(i).getItemPhoneNumber().trim().equals(items.get(j).getItemPhoneNumber().trim()))
                     items.remove(j);
             }
         }
         return items;
     }
+
 
     @Override
     public void onTerminate() {

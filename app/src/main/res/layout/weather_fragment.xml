@@ -1,8 +1,8 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     tools:context="WeatherFragment"
     android:id="@+id/weather_fragment">
 
@@ -15,5 +15,15 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="56dp"
         android:id="@+id/textWeather" />
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/simpleDraweeView"
+        android:layout_height="100dp"
+        fresco:fadeDuration="150"
+        fresco:roundAsCircle="false"
+        fresco:actualImageScaleType="focusCrop"
+        android:layout_width="100dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

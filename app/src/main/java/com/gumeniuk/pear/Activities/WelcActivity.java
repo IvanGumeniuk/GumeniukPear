@@ -69,7 +69,11 @@ public class WelcActivity extends AppCompatActivity
             fmanager.beginTransaction().replace(R.id.fragment,welFragment).commit();
             app.setLaunch(false);
         }
+
     }
+
+
+
 
     @Override
     public void onBackPressed() {
@@ -124,7 +128,6 @@ public class WelcActivity extends AppCompatActivity
         if (id == R.id.session_finish) {
             if(app.getEntryWay().equals("google")) FirebaseAuth.getInstance().signOut();
             if(app.getEntryWay().equals("facebook")) LoginManager.getInstance().logOut();
-            app.setEntryWay("");
             app.logOut();
             startActivity(new Intent(this,MainActivity.class));
             finish();

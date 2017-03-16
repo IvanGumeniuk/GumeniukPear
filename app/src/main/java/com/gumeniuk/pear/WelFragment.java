@@ -29,7 +29,6 @@ public class WelFragment extends Fragment {
 
     private ArrayList<RecyclerItem> listItems;
     private MyApplicationClass app;
-    private View view;
     RecyclerView recyclerView;
 
     @Nullable
@@ -39,7 +38,7 @@ public class WelFragment extends Fragment {
         app = ((MyApplicationClass)getActivity().getApplicationContext());
         app.setRealm(Realm.getDefaultInstance());
 
-        view  = inflater.inflate(R.layout.fragment_wel, container, false);
+        View view = inflater.inflate(R.layout.fragment_wel, container, false);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
@@ -57,14 +56,12 @@ public class WelFragment extends Fragment {
         return view;
     }
 
-    public int initialization(){
+    public void initialization(){
         listItems = new ArrayList<>();
         listItems = app.getRealmData();
         app.setIsContacts(true);
-
         app.setAdapter(new MyAdapter(listItems, getActivity(), app));
         recyclerView.setAdapter(app.getAdapter());
-        return 1;
     }
 
 
@@ -113,6 +110,7 @@ public class WelFragment extends Fragment {
         final AlertDialog dialog = builder.create();
         dialog.show();
     }
+
 
     @Override
     public void onStop() {
