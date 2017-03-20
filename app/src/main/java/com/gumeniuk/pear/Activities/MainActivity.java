@@ -237,13 +237,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         @Override
                         public void onCancel() {
                             Log.d(TAG, "facebook:onCancel");
-                            // ...
+                            hideProgressDialog();
                         }
 
                         @Override
                         public void onError(FacebookException error) {
                             Log.d(TAG, "facebook:onError", error);
-                            // ...
+                            hideProgressDialog();
                         }
                     });
                     showProgressDialog();
