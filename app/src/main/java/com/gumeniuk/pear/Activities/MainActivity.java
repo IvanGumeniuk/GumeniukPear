@@ -1,7 +1,10 @@
 package com.gumeniuk.pear.Activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -214,32 +217,38 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 } else Toast.makeText(this, R.string.WrongLogPass, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btnGoogle:
-                app.setEntryWay("google");
-                showProgressDialog();
-                signIn();
+                if(hasConnection(this)) {
+                    app.setEntryWay("google");
+                    showProgressDialog();
+                    signIn();
+                } else
+                    Toast.makeText(this, "Check your internet connection", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btnFacebook:
-                app.setEntryWay("facebook");
-                btnFacebook.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        Log.d(TAG, "facebook:onSuccess:" + loginResult);
-                        handleFacebookAccessToken(loginResult.getAccessToken());
-                    }
+                if(hasConnection(this)) {
+                    app.setEntryWay("facebook");
+                    btnFacebook.registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+                        @Override
+                        public void onSuccess(LoginResult loginResult) {
+                            Log.d(TAG, "facebook:onSuccess:" + loginResult);
+                            handleFacebookAccessToken(loginResult.getAccessToken());
+                        }
 
-                    @Override
-                    public void onCancel() {
-                        Log.d(TAG, "facebook:onCancel");
-                        // ...
-                    }
+                        @Override
+                        public void onCancel() {
+                            Log.d(TAG, "facebook:onCancel");
+                            // ...
+                        }
 
-                    @Override
-                    public void onError(FacebookException error) {
-                        Log.d(TAG, "facebook:onError", error);
-                        // ...
-                    }
-                });
-                showProgressDialog();
+                        @Override
+                        public void onError(FacebookException error) {
+                            Log.d(TAG, "facebook:onError", error);
+                            // ...
+                        }
+                    });
+                    showProgressDialog();
+                } else
+                    Toast.makeText(this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btnSingUp:
                 startActivity(new Intent(this, RegActivity.class));
@@ -272,7 +281,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
             } else {
-                Toast.makeText(this, "Network connection problems", Toast.LENGTH_SHORT).show();
+             //   Toast.makeText(this, "Network connection problems", Toast.LENGTH_SHORT).show();
                 hideProgressDialog();
                 // Google Sign In failed, update UI appropriately
                 // ...
@@ -342,6 +351,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (mProgressDialog != null && mProgressDialog.isShowing()) {
             mProgressDialog.dismiss();
         }
+    }
+
+    public static boolean hasConnection(final Context context)
+    {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null;
     }
 
 

@@ -8,13 +8,15 @@
 
 
     <TextView
+        android:id="@+id/weatherCity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="67dp"
+        android:textAlignment="center"
+        android:textSize="24sp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="56dp"
-        android:id="@+id/textWeather" />
+        android:layout_alignParentStart="true" />
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/simpleDraweeView"
@@ -23,7 +25,39 @@
         fresco:roundAsCircle="false"
         fresco:actualImageScaleType="focusCrop"
         android:layout_width="100dp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignTop="@+id/weatherCity"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="57dp" />
+
+    <TextView
+        android:id="@+id/weatherTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/weatherSky"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="34dp"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/weatherFeels"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/weatherTemp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/weatherSky"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/simpleDraweeView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="23dp"
+        android:textAlignment="center"
+        android:textSize="18sp" />
 
 </RelativeLayout>

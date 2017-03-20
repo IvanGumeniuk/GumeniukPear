@@ -20,7 +20,7 @@ import android.util.Log;
  * Created by Ваня on 11.03.2017.
  */
 
-public class GPSTracker extends Service implements LocationListener  {
+public class GPSTracker extends Service implements LocationListener {
     private final Context mContext;
     private final Activity mActivity;
 
@@ -57,60 +57,60 @@ public class GPSTracker extends Service implements LocationListener  {
             locationManager = (LocationManager) mContext
                     .getSystemService(LOCATION_SERVICE);
 
-            // getting GPS status
+//            // getting GPS status
             isGPSEnabled = locationManager
                     .isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-            // getting network status
+//
+//            // getting network status
             isNetworkEnabled = locationManager
                     .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-            if (!isGPSEnabled && !isNetworkEnabled) {
-                showSettingsAlert();
-            } else {
-                this.canGetLocation = true;
-                if (isNetworkEnabled) {
+            Log.d("lonlat", "GPS "+String.valueOf(isGPSEnabled));
+            Log.d("lonlat", "Net "+String.valueOf(isNetworkEnabled));
+
+            this.canGetLocation = true;
 
 
-//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-
-                    if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        ActivityCompat.requestPermissions(mActivity,new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-                    }
-                    locationManager.requestLocationUpdates(
-                            LocationManager.NETWORK_PROVIDER,
-                            MIN_TIME_BW_UPDATES,
-                            MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                    Log.d("Network", "Network");
+                locationManager.requestLocationUpdates(
+                        LocationManager.NETWORK_PROVIDER,
+                        MIN_TIME_BW_UPDATES,
+                        MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+                    Log.d("lonlat", "Network");
                     if (locationManager != null) {
                         location = locationManager
                                 .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
                         if (location != null) {
                             latitude = location.getLatitude();
                             longitude = location.getLongitude();
+                            Log.d("lonlat", String.valueOf(latitude) + " NET " + String.valueOf(longitude));
                         }
+                        else Log.d("lonlat", String.valueOf(latitude) + " NET == null" + String.valueOf(longitude));
                     }
-                }
+
                 // if GPS Enabled get lat/long using GPS Services
 
-                    if (location == null ) {
-                        if(!isGPSEnabled) showSettingsAlert();
-
+                    if(!isNetworkEnabled) {
                         locationManager.requestLocationUpdates(
                                 LocationManager.GPS_PROVIDER,
                                 MIN_TIME_BW_UPDATES,
                                 MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
-                        Log.d("GPS Enabled", "GPS Enabled");
+                        Log.d("lonlat", "GPS Enabled");
                         if (locationManager != null) {
                             location = locationManager
                                     .getLastKnownLocation(LocationManager.GPS_PROVIDER);
                             if (location != null) {
                                 latitude = location.getLatitude();
                                 longitude = location.getLongitude();
-                            }
+                                Log.d("lonlat", String.valueOf(latitude) + " GPS " + String.valueOf(longitude));
+                            } else
+                                Log.d("lonlat", String.valueOf(latitude) + " GPS == null" + String.valueOf(longitude));
                         }
-                }
+                    }
+
+            if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(mActivity,new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             }
 
         } catch (Exception e) {
@@ -130,12 +130,7 @@ public class GPSTracker extends Service implements LocationListener  {
         if (locationManager != null) {
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
+
                 return;
             }
             locationManager.removeUpdates(GPSTracker.this);
@@ -206,10 +201,17 @@ public class GPSTracker extends Service implements LocationListener  {
         alertDialog.show();
     }
 
+    public void isGpsEnabled(){
+        getLocation();
+        if(!isGPSEnabled && !isNetworkEnabled) showSettingsAlert();
+    }
+
+
     @Override
     public void onLocationChanged(Location location) {
         latitude = location.getLatitude();
         longitude = location.getLongitude();
+        Log.d("lonlat", "location changet "+ String.valueOf(latitude)+" "+String.valueOf(longitude));
     }
 
     @Override

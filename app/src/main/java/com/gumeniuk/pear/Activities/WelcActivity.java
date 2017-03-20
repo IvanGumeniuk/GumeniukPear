@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
+import com.gumeniuk.pear.GPSTracker;
 import com.gumeniuk.pear.MapsFragment;
 import com.gumeniuk.pear.MyApplicationClass;
 import com.gumeniuk.pear.R;
@@ -45,6 +46,8 @@ public class WelcActivity extends AppCompatActivity
         weatherFragment = new WeatherFragment();
         mapsFragment = new MapsFragment();
         mapsFragment.setRetainInstance(true);
+
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -150,5 +153,12 @@ public class WelcActivity extends AppCompatActivity
 
 
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        GPSTracker gpsTracker = new GPSTracker(this,this);
+        gpsTracker.isGpsEnabled();
     }
 }

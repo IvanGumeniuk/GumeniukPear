@@ -4,11 +4,14 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,10 +45,14 @@ public class MapsFragment extends Fragment {
     private ArrayList<MarkerInfo> markersInfo;
     private ProgressDialog mProgressDialog;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
 
+        if(!hasConnection(getActivity()))
+            Toast.makeText(getActivity(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
+        
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
 
         app = (MyApplicationClass) getActivity().getApplicationContext();
@@ -60,13 +67,18 @@ public class MapsFragment extends Fragment {
             e.printStackTrace();
         }
 
+            init();
 
+
+        return view;
+    }
+
+    public void init(){
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap mMap) {
                 googleMap = mMap;
                 downloadMarkers(googleMap);
-
 
                 googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
                     @Override
@@ -89,6 +101,7 @@ public class MapsFragment extends Fragment {
 
                 if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
                         == PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                     googleMap.setMyLocationEnabled(true);
                     savingMyLocation();
 
@@ -99,8 +112,6 @@ public class MapsFragment extends Fragment {
             }
 
         });
-
-        return view;
     }
 
     private void clickMarker(final Marker marker) {
@@ -316,72 +327,19 @@ public class MapsFragment extends Fragment {
 
         GPSTracker gps = new GPSTracker(getActivity(),getActivity());
 
-        if(gps.canGetLocation()){
-
-            double latitude = gps.getLatitude();
-            double longitude = gps.getLongitude();
-
-            // \n is for new line
-   //         Toast.makeText(getActivity(), "Your Location is - \nLat: " + latitude + "\nLong: " + longitude, Toast.LENGTH_LONG).show();
-        }else{
-            // can't get location
-            // GPS or Network is not enabled
-            // Ask user to enable GPS/network in settings
-            gps.showSettingsAlert();
-        }
-
-
-
-
-
-
-
-
-
-     /*   if (ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // TODO: Consider calling
-
-            return;
-        }
-        LocationManager locationManager = (LocationManager)
-                getActivity().getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
-        String provider = locationManager.getBestProvider(criteria, false);
-
-        LocationListener locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                app.setLatitude(location.getLatitude());
-                app.setLongitude(location.getLongitude());
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-
-        Log.d("locationU",String.valueOf(app.getLatitude())+" "+String.valueOf(app.getLongitude()));
-        Location location = locationManager.getLastKnownLocation(/*LocationManager.GPS_PROVIDER provider);
-        LatLng userLocation = new LatLng(location.getLatitude(),location.getLongitude());
-        Log.d("locationU",String.valueOf(userLocation.latitude)+" "+String.valueOf(userLocation.longitude));
-        */
-
+            Log.d("lonlat", "Maps frag saving my location");
+            app.setLatitude(gps.getLatitude());
+            app.setLongitude(gps.getLongitude());
     }
+
+    public static boolean hasConnection(final Context context)
+    {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        return activeNetwork != null;
+    }
+
+
 
     public void showProgressDialog(Context context) {
         if (mProgressDialog == null) {
