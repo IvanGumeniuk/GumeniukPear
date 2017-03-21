@@ -29,29 +29,27 @@
                 android:layout_centerHorizontal="true" />
 
             <EditText
+                android:id="@+id/textPassword"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
-                android:ems="10"
-                android:layout_marginTop="26dp"
-                android:id="@+id/textPassword"
-                android:hint="Password"
-                android:text="12345"
                 android:layout_below="@+id/textLogin"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="26dp"
+                android:ems="10"
+                android:hint="Password"
+                android:inputType="textPassword" />
 
             <EditText
+                android:id="@+id/textLogin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:ems="10"
-                android:layout_marginTop="25dp"
-                android:id="@+id/textLogin"
-                android:hint="Login"
-                android:text="Qwerty"
-                android:layout_alignParentTop="true"
                 android:layout_alignLeft="@+id/textPassword"
-                android:layout_alignStart="@+id/textPassword" />
+                android:layout_alignParentTop="true"
+                android:layout_alignStart="@+id/textPassword"
+                android:layout_marginTop="25dp"
+                android:ems="10"
+                android:hint="Login"
+                android:inputType="textPersonName" />
 
             <Button
                 android:text="Exit"

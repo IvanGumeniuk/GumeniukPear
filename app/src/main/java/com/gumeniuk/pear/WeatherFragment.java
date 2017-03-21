@@ -62,7 +62,7 @@ public class WeatherFragment extends Fragment {
             }
             @Override
             public void onFailure(Call<Weather> call, Throwable t) {
-                Toast.makeText(getActivity(), "Please check your internet connection", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), R.string.check_internet, Toast.LENGTH_LONG).show();
             }
         });
 
@@ -92,7 +92,7 @@ public class WeatherFragment extends Fragment {
 
             @Override
             public void onFailure(Call<Weather> call, Throwable t) {
-                Toast.makeText(getActivity(), "Please check your internet connection", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), R.string.check_internet, Toast.LENGTH_LONG).show();
             }
         });
 

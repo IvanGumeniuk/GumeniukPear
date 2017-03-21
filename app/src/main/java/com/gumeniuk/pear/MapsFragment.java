@@ -51,7 +51,7 @@ public class MapsFragment extends Fragment {
                              final Bundle savedInstanceState) {
 
         if(!hasConnection(getActivity()))
-            Toast.makeText(getActivity(), "Please check your internet connection", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), R.string.check_internet, Toast.LENGTH_SHORT).show();
         
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
 
@@ -106,7 +106,7 @@ public class MapsFragment extends Fragment {
                     savingMyLocation();
 
                 } else {
-                    Toast.makeText(getActivity(), "You have to accept to enjoy all app's services!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), R.string.you_have_to_accept_serv, Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -138,7 +138,7 @@ public class MapsFragment extends Fragment {
 
         final AlertDialog dialog = builder.create();
 
-        btnEdit.setText("Edit marker");
+        btnEdit.setText(R.string.EditMarker);
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,7 +146,7 @@ public class MapsFragment extends Fragment {
             }
         });
 
-        btnDelete.setText("Delete marker");
+        btnDelete.setText(R.string.DeleteMarker);
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -252,7 +252,7 @@ public class MapsFragment extends Fragment {
 
                 googleMap.addMarker(new MarkerOptions().position(latLng).title(inputTitle.getText().toString().trim()).snippet(inputDescription.getText().toString().trim()));
                 oldDialog.dismiss();
-                Toast.makeText(getContext(), "Marker was edited", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.MarkerWasDeleted, Toast.LENGTH_SHORT).show();
             }
         });
         builder.setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {
@@ -310,7 +310,7 @@ public class MapsFragment extends Fragment {
                 app.setRealmMarkerData(markerInfo, false);
                 markersInfo.add(markerInfo);
                 googleMap.addMarker(new MarkerOptions().position(latLng).title(inputTitle.getText().toString().trim()).snippet(inputDescription.getText().toString().trim()));
-                Toast.makeText(getContext(), "Created new marker", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.CreatedNewMarker, Toast.LENGTH_SHORT).show();
             }
         });
         builder.setNegativeButton(getString(R.string.Cancel), new DialogInterface.OnClickListener() {

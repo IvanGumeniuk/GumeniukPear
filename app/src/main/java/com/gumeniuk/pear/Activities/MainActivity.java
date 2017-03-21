@@ -248,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     });
                     showProgressDialog();
                 } else
-                    Toast.makeText(this, "Please check your internet connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.check_internet, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btnSingUp:
                 startActivity(new Intent(this, RegActivity.class));
@@ -312,7 +312,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithCredential", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                            Toast.makeText(MainActivity.this, R.string.Auth_failed,
                                     Toast.LENGTH_SHORT).show();
                         }
                         // ...
@@ -324,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
-        Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.GooglePlaySer_error, Toast.LENGTH_SHORT).show();
         hideProgressDialog();
     }
 
