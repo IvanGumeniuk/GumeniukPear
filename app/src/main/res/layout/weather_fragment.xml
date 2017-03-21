@@ -7,57 +7,74 @@
     android:id="@+id/weather_fragment">
 
 
-    <TextView
-        android:id="@+id/weatherCity"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="67dp"
-        android:textAlignment="center"
-        android:textSize="24sp"
+        android:layout_marginTop="56dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true">
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/simpleDraweeView"
-        android:layout_height="100dp"
-        fresco:fadeDuration="150"
-        fresco:roundAsCircle="false"
-        fresco:actualImageScaleType="focusCrop"
-        android:layout_width="100dp"
-        android:layout_alignTop="@+id/weatherCity"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="57dp" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/weatherTemp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/weatherSky"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="34dp"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+            <TextView
+                android:id="@+id/weatherCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="67dp"
+                android:textAlignment="center"
+                android:textSize="24sp" />
 
-    <TextView
-        android:id="@+id/weatherFeels"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/weatherTemp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:textAlignment="center"
-        android:textSize="18sp" />
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/simpleDraweeView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignTop="@+id/weatherCity"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="57dp"
+                fresco:actualImageScaleType="focusCrop"
+                fresco:fadeDuration="150"
+                fresco:roundAsCircle="false" />
 
-    <TextView
-        android:id="@+id/weatherSky"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/simpleDraweeView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="23dp"
-        android:textAlignment="center"
-        android:textSize="18sp" />
+            <TextView
+                android:id="@+id/weatherTemp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/weatherSky"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="34dp"
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/weatherFeels"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/weatherTemp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="30dp"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/weatherSky"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/simpleDraweeView"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="23dp"
+                android:textAlignment="center"
+                android:textSize="18sp" />
+
+
+        </RelativeLayout>
+    </ScrollView>
+
 
 </RelativeLayout>
