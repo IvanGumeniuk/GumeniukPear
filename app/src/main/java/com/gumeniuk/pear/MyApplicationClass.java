@@ -162,7 +162,7 @@ public class MyApplicationClass extends Application {
     public void logOut() {
         edit.putBoolean(getString(R.string.logged), false);
         edit.putString(getString(R.string.user), "");
-        edit.putString("entryWay","");
+        edit.putString(getString(R.string.entryWay),"");
         edit.apply();
     }
 
