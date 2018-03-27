@@ -1,6 +1,9 @@
 package com.gumeniuk.pear.Activities;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,18 +39,41 @@ public class WelcActivity extends AppCompatActivity
     private MapsFragment mapsFragment;
     private FragmentManager fmanager;
 
+    private BroadcastReceiver receiver;
+
+    public static final String BROADCAST_ACTION = "location_working";
+    public static final String LOCATION_LATITUDE = "latitude";
+    public static final String LOCATION_LONGITUDE = "longitude";
+
+    private double latitude;
+    private double longitude;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welc);
 
         app = ((MyApplicationClass) getApplicationContext());
+       startService(new Intent(this, GPSTracker.class));
+
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                latitude = intent.getDoubleExtra(LOCATION_LATITUDE, 0);
+                longitude = intent.getDoubleExtra(LOCATION_LONGITUDE, 0);
+                app.setLatitude(latitude);
+                app.setLongitude(longitude);
+                Log.d("qwerty","coordinates -  "+ latitude+" "+longitude);
+            }
+        };
+        IntentFilter intFilt = new IntentFilter(BROADCAST_ACTION);
+        registerReceiver(receiver, intFilt);
+
 
         welFragment = new WelFragment();
         weatherFragment = new WeatherFragment();
         mapsFragment = new MapsFragment();
         mapsFragment.setRetainInstance(true);
-
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -68,14 +95,12 @@ public class WelcActivity extends AppCompatActivity
         head.setText(app.getUserLogin());
 
         fmanager = getSupportFragmentManager();
-        if(app.isLaunch()){
-            fmanager.beginTransaction().replace(R.id.fragment,welFragment).commit();
+        if (app.isLaunch()) {
+            fmanager.beginTransaction().replace(R.id.fragment, welFragment).commit();
             app.setLaunch(false);
         }
 
     }
-
-
 
 
     @Override
@@ -92,7 +117,7 @@ public class WelcActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.search_menu,menu);
+        inflater.inflate(R.menu.search_menu, menu);
 
         MenuItem menuItem = menu.findItem(R.id.search);
         SearchView searchView = (SearchView) menuItem.getActionView();
@@ -105,7 +130,7 @@ public class WelcActivity extends AppCompatActivity
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if(app.getAdapter()!= null)
+                if (app.getAdapter() != null)
                     app.getAdapter().searchFilter(newText);
                 return false;
             }
@@ -129,25 +154,21 @@ public class WelcActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.session_finish) {
-            if(app.getEntryWay().equals("google")) FirebaseAuth.getInstance().signOut();
-            if(app.getEntryWay().equals("facebook")) LoginManager.getInstance().logOut();
+            if (app.getEntryWay().equals("google")) FirebaseAuth.getInstance().signOut();
+            if (app.getEntryWay().equals("facebook")) LoginManager.getInstance().logOut();
             app.logOut();
-            startActivity(new Intent(this,MainActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
             finish();
-        }else
-        if(id == R.id.showContacts)
-        {
-            if(app.getIsContacts()) return true;
-            else{
-                fmanager.beginTransaction().replace(R.id.fragment,welFragment).commit();
+        } else if (id == R.id.showContacts) {
+            if (app.getIsContacts()) return true;
+            else {
+                fmanager.beginTransaction().replace(R.id.fragment, welFragment).commit();
             }
-        }else
-        if(id == R.id.showWeather){
-            fmanager.beginTransaction().replace(R.id.fragment,weatherFragment).commit();
+        } else if (id == R.id.showWeather) {
+            fmanager.beginTransaction().replace(R.id.fragment, weatherFragment).commit();
             app.setIsContacts(false);
-        }else
-        if(id == R.id.showGoogleMaps){
-            fmanager.beginTransaction().replace(R.id.fragment,mapsFragment).commit();
+        } else if (id == R.id.showGoogleMaps) {
+            fmanager.beginTransaction().replace(R.id.fragment, mapsFragment).commit();
             app.setIsContacts(false);
         }
 
@@ -158,7 +179,11 @@ public class WelcActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        GPSTracker gpsTracker = new GPSTracker(this,this);
-        gpsTracker.isGpsEnabled();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
     }
 }

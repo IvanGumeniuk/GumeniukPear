@@ -59,4 +59,5 @@
     <string name="EditMarker">Edit marker</string>
     <string name="DeleteMarker">Delete marker</string>
     <string name="entryWay">entryWay</string>
+    <string name="permission_denied_contacts">Permission denied</string>
 </resources>

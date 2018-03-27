@@ -103,8 +103,6 @@ public class MapsFragment extends Fragment {
                         == PackageManager.PERMISSION_GRANTED) {
                     requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                     googleMap.setMyLocationEnabled(true);
-                    savingMyLocation();
-
                 } else {
                     Toast.makeText(getActivity(), R.string.you_have_to_accept_serv, Toast.LENGTH_LONG).show();
                 }
@@ -323,14 +321,7 @@ public class MapsFragment extends Fragment {
         dialog.show();
     }
 
-    private void savingMyLocation() {
 
-        GPSTracker gps = new GPSTracker(getActivity(),getActivity());
-
-            Log.d("lonlat", "Maps frag saving my location");
-            app.setLatitude(gps.getLatitude());
-            app.setLongitude(gps.getLongitude());
-    }
 
     public static boolean hasConnection(final Context context)
     {

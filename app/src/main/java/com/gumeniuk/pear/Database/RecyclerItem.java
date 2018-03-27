@@ -1,9 +1,13 @@
 package com.gumeniuk.pear.Database;
 
+import android.support.annotation.NonNull;
+
+import java.util.Comparator;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
-public class RecyclerItem extends RealmObject {
+public class RecyclerItem extends RealmObject implements Comparator<RecyclerItem> {
 
     @PrimaryKey
     private String id;
@@ -62,5 +66,11 @@ public class RecyclerItem extends RealmObject {
 
     public void setEnteringWay(String enteringWay) {
         this.enteringWay = enteringWay;
+    }
+
+
+    @Override
+    public int compare(RecyclerItem recyclerItem, RecyclerItem t1) {
+        return recyclerItem.getItemName().compareTo(t1.getItemName());
     }
 }

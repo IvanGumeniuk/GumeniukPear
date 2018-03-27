@@ -1,7 +1,10 @@
 package com.gumeniuk.pear;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -37,7 +40,7 @@ public class WeatherFragment extends Fragment {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view  = inflater.inflate(R.layout.weather_fragment, container, false);
 
             showProgressDialog(getActivity());
@@ -48,13 +51,9 @@ public class WeatherFragment extends Fragment {
         wCity = (TextView)view.findViewById(R.id.weatherCity);
         wSky = (TextView)view.findViewById(R.id.weatherSky);
 
-        GPSTracker gpsTracker = new GPSTracker(getActivity(),getActivity());
-        gpsTracker.getLocation();
-        Log.d("lonlat","Weathe -  "+ gpsTracker.getLocation().toString());
-
         posts = new ArrayList<>();
 
-        app.getForecastWeather().getData("8846dd25320e47fd935192031172002",gpsTracker.getLatitude()+","+gpsTracker.getLongitude()).enqueue(new Callback<Weather>() {
+        app.getForecastWeather().getData("8846dd25320e47fd935192031172002",app.getLatitude()+","+app.getLongitude()).enqueue(new Callback<Weather>() {
             @Override
             public void onResponse(Call<Weather> call, Response<Weather> response) {
                 posts.addAll(response.body().getForecast().getForecastday());
@@ -67,7 +66,7 @@ public class WeatherFragment extends Fragment {
         });
 
 
-        app.getCurrentWeather().getData("8846dd25320e47fd935192031172002", gpsTracker.getLatitude()+","+gpsTracker.getLongitude()).enqueue(new Callback<Weather>() {
+        app.getCurrentWeather().getData("8846dd25320e47fd935192031172002", app.getLatitude()+","+app.getLongitude()).enqueue(new Callback<Weather>() {
             @Override
             public void onResponse(Call<Weather> call, Response<Weather> response) {
                 try {
@@ -77,7 +76,8 @@ public class WeatherFragment extends Fragment {
                     String tmpC = response.body().getCurrent().getTempC().toString();
                     String qw = response.body().getCurrent().getFeelslikeC().toString();
 
-                    wCity.setText(city+", "+country);
+
+                    wCity.setText(city+", "+response.body().getLocation().getRegion()+", "+country);
                     wSky.setText(status);
                     wTemp.setText(tmpC+"°C");
                     wFeels.setText("Feels like "+qw+"°C");
@@ -95,9 +95,14 @@ public class WeatherFragment extends Fragment {
                 Toast.makeText(getActivity(), R.string.check_internet, Toast.LENGTH_LONG).show();
             }
         });
-
             hideProgressDialog();
         return view;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
     }
 
     public void showProgressDialog(Context context) {

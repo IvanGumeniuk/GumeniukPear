@@ -6,6 +6,7 @@ import android.content.ContentResolver;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.ContactsContract;
 import android.support.v4.content.ContextCompat;
 import android.widget.EditText;
@@ -19,6 +20,8 @@ import com.gumeniuk.pear.Weather.ICurrentWeather;
 import com.gumeniuk.pear.Weather.IForecastWeather;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.UUID;
 
 import io.realm.Realm;
@@ -373,69 +376,58 @@ public class MyApplicationClass extends Application {
     }
 
     public ArrayList<RecyclerItem> readPhoneContacts() {
-        if (ContextCompat.checkSelfPermission(getBaseContext(), Manifest.permission.READ_CONTACTS)
-                == PackageManager.PERMISSION_GRANTED) {
-            ArrayList<RecyclerItem> items = new ArrayList<RecyclerItem>();
-            ContentResolver contentResolver = getContentResolver();
-            Cursor cursor = contentResolver.query(ContactsContract.Contacts.CONTENT_URI, null,
-                    null, null, null);
-            if (cursor.getCount() > 0) {
-                while (cursor.moveToNext()) {
-                    String id = cursor.getString(cursor
-                            .getColumnIndex(ContactsContract.Contacts._ID));
-                    String name = cursor
-                            .getString(cursor
-                                    .getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                    if (Integer
-                            .parseInt(cursor.getString(cursor
-                                    .getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
-                        Cursor phoneCursor = contentResolver.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                                null,
-                                ContactsContract.CommonDataKinds.Phone.CONTACT_ID
-                                        + " = ?", new String[]{id}, null);
-                        while (phoneCursor.moveToNext()) {
-                            int phoneType = phoneCursor
-                                    .getInt(phoneCursor
-                                            .getColumnIndex(ContactsContract.CommonDataKinds.Phone.TYPE));
-                            String phoneNumber = phoneCursor
-                                    .getString(phoneCursor
-                                            .getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                            switch (phoneType) {
-                                case ContactsContract.CommonDataKinds.Phone.TYPE_MOBILE:
-                                    items.add(new RecyclerItem(UUID.randomUUID().toString(), name, phoneNumber, getUserLogin(), getEntryWay()));
-                                    break;
-                                case ContactsContract.CommonDataKinds.Phone.TYPE_HOME:
-                                    items.add(new RecyclerItem(UUID.randomUUID().toString(), name, phoneNumber, getUserLogin(), getEntryWay()));
-                                    break;
-                                case ContactsContract.CommonDataKinds.Phone.TYPE_WORK:
-                                    items.add(new RecyclerItem(UUID.randomUUID().toString(), name, phoneNumber, getUserLogin(), getEntryWay()));
-                                    break;
-                                case ContactsContract.CommonDataKinds.Phone.TYPE_OTHER:
-                                    items.add(new RecyclerItem(UUID.randomUUID().toString(), name, phoneNumber, getUserLogin(), getEntryWay()));
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                        phoneCursor.close();
+        ArrayList<RecyclerItem> items = new ArrayList<>();
+
+        String phoneNumber;
+        Uri CONTENT_URI = ContactsContract.Contacts.CONTENT_URI;
+        String _ID = ContactsContract.Contacts._ID;
+        String DISPLAY_NAME = ContactsContract.Contacts.DISPLAY_NAME;
+        String HAS_PHONE_NUMBER = ContactsContract.Contacts.HAS_PHONE_NUMBER;
+
+
+        Uri PhoneCONTENT_URI = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+        String Phone_CONTACT_ID = ContactsContract.CommonDataKinds.Phone.CONTACT_ID;
+        String NUMBER = ContactsContract.CommonDataKinds.Phone.NUMBER;
+
+        ContentResolver contentResolver = getContentResolver();
+        Cursor cursor = contentResolver.query(CONTENT_URI, null, null, null, null);
+
+        // Loop for every contact in the phone
+
+        if (cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+
+                String contact_id = cursor.getString(cursor.getColumnIndex(_ID));
+                String name = cursor.getString(cursor.getColumnIndex(DISPLAY_NAME));
+
+                int hasPhoneNumber = Integer.parseInt(cursor.getString(cursor.getColumnIndex(HAS_PHONE_NUMBER)));
+
+                if (hasPhoneNumber > 0) {
+                    // Query and loop for every phone number of the contact
+                    Cursor phoneCursor = contentResolver.query(PhoneCONTENT_URI, null,
+                            Phone_CONTACT_ID + " = ?", new String[]{contact_id}, null);
+
+                    while (phoneCursor.moveToNext()) {
+                        phoneNumber = phoneCursor.getString(phoneCursor.getColumnIndex(NUMBER));
+
+                        items.add(new RecyclerItem(UUID.randomUUID().toString(), name, phoneNumber, getUserLogin(), getEntryWay()));
                     }
+                    phoneCursor.close();
                 }
             }
-            return removeDuplicates(items);
-        } else {
-            Toast.makeText(this, "You don`t give permission. Cannot read phone contacts", Toast.LENGTH_SHORT).show();
-            return null;
         }
+        return removeDuplicates(items);
     }
 
     private ArrayList<RecyclerItem> removeDuplicates(ArrayList<RecyclerItem> items) {
-        for (int i = 0; i < items.size(); i++) {
-            for (int j = i; j < items.size(); j++) {
+        for (int i = 0; i < items.size()-1; i++) {
+            for (int j = i+1; j < items.size(); j++) {
                 if (items.get(i).getItemName().trim().equals(items.get(j).getItemName().trim()) &&
                         items.get(i).getItemPhoneNumber().trim().equals(items.get(j).getItemPhoneNumber().trim()))
                     items.remove(j);
             }
         }
+        Collections.sort(items, new RecyclerItem());
         return items;
     }
 

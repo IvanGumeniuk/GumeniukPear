@@ -30,6 +30,7 @@
             android:layout_marginRight="57dp"
             android:layout_marginTop="31dp"
             android:ems="10"
+            android:text="Qwerty"
             android:hint="Login"
             android:inputType="textPersonName" />
 
@@ -42,6 +43,7 @@
             android:layout_below="@+id/textLogin"
             android:layout_marginTop="20dp"
             android:ems="10"
+            android:text="11111"
             android:hint="Password"
             android:inputType="textPassword" />
 

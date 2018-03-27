@@ -43,6 +43,8 @@
             android:name=".Activities.WelcActivity"
             android:label="@string/title_activity_welc"
             android:theme="@style/AppTheme"></activity>
+
+        <service android:name=".GPSTracker" />
     </application>
 
 </manifest>
